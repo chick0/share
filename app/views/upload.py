@@ -65,6 +65,11 @@ def upload():
     file = request.files['upload']
     stream = file.read()
 
+    if len(file.filename) >= 100:
+        return render_template(
+            "upload/cancel.html",
+            why="파일명이 너무 길어요 (100자 이하)"
+        )
     if len(stream) == 0:
         return render_template(
             "upload/cancel.html",
