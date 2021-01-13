@@ -16,8 +16,6 @@
 
         <link rel="canonical" href="{{ 'App.host'|load }}{{ request.path }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-
-        <noscript><style>.no-script {display: none;}</style></noscript>
     </head>
     <body>
         <!-- 시작 -->{% block content %}{% endblock %}
