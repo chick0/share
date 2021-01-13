@@ -7,7 +7,6 @@ from flask import render_template
 from flask import redirect, url_for
 
 from app import db
-
 from models import File
 
 bp = Blueprint(

@@ -4,7 +4,6 @@ from json import dumps
 
 from flask import Blueprint
 from flask import abort, Response
-
 from sqlalchemy.exc import OperationalError
 
 from models import File
