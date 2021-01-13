@@ -64,13 +64,14 @@ def upload():
 
     file = request.files['upload']
     stream = file.read()
+    print(len(stream))
 
-    if file.seek(0, 2) == 0:
+    if len(stream) == 0:
         return render_template(
             "upload/cancel.html",
             why="파일이 없음"
         )
-    if file.seek(0, 2) > 50 * 1024 * 1024:
+    if len(stream) > 50 * 1024 * 1024:
         return render_template(
             "upload/cancel.html",
             why="파일의 용량이 너무 큼"
