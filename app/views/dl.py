@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from os import path
+from os import path, remove
 from json import dumps
+from datetime import datetime, timedelta
 
 from flask import Blueprint
+from flask import render_template
 from flask import abort, Response
 from sqlalchemy.exc import OperationalError
 
+from app import db
 from models import File
 
 bp = Blueprint(
@@ -47,10 +50,38 @@ def md5(idx: str):
 
 
 @bp.route("/<string:idx>")
-def download(idx: str):
+def ask(idx: str):
     ctx = get_file_by_idx(idx=idx)
     if ctx is None:
         abort(404)
+
+    return render_template(
+        "dl/ask.html",
+        ctx=ctx
+    )
+
+
+@bp.route("/<string:idx>/<string:filename>")
+def download(idx: str, filename: str):
+    ctx = get_file_by_idx(idx=idx)
+    if ctx is None:
+        abort(404)
+
+    delete_time = ctx.upload + timedelta(days=1)
+    now = datetime.now()
+
+    if now >= delete_time:
+        try:
+            remove(path=path.join("upload", idx))
+            db.session.delete(ctx)
+            db.session.commit()
+
+            return render_template(
+                "error/error.html",
+                message="만료된 파일입니다"
+            )
+        except (FileNotFoundError, PermissionError, Exception):
+            pass
 
     if path.exists(path.join("upload", idx)):
         try:

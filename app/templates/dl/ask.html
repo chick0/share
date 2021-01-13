@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <h2>파일 다운로드</h2>
+            <p>파일명 : <span class="high">{{ ctx.filename }}</span></p>
+            <a class="btn" href="{{ url_for('dl.download', idx=ctx.idx, filename=ctx.filename) }}" target="_blank" style="width:30%;">파일 다운로드</a>
+        </section>
+
+        <section class="menu l">
+            MD5 <a id="md5" class="high copy" data-clipboard-target="#md5">{{ ctx.md5 }}</a>
+        </section>
+{% endblock %}
+{% block script %}
+        <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+        <script>
+            new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!"),window.getSelection().removeAllRanges();});
+        </script>
+{% endblock %}
