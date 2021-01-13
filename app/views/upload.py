@@ -64,7 +64,6 @@ def upload():
 
     file = request.files['upload']
     stream = file.read()
-    print(len(stream))
 
     if len(stream) == 0:
         return render_template(
