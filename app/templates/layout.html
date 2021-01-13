@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>Share!</title>
+
+        <meta name="author" content="chick_0">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no">
+        <meta name="keywords" content="파일, 공유, 파일공유">
+        <meta name="description" content="파일공유">
+
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="ko_KR">
+        <meta property="og:title" content="{{ title }}">
+        <meta property="og:description" content="파일공유">
+
+        <link rel="canonical" href="{{ 'App.host'|load }}{{ request.path }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+        <noscript><style>.no-script {display: none;}</style></noscript>
+    </head>
+    <body>
+        <!-- 시작 -->{% block content %}{% endblock %}
+
+        <!-- 스크립트 구역 -->
+        {% block script %}{% endblock %}
+    </body>
+</html>

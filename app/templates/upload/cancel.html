@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <h2>업로드 취소됨</h2>
+            <p>{{ why }}</p>
+
+            <a class="btn" href="{{ url_for('index.index') }}">메인 화면으로 돌아가기</a>
+        </section>
+{% endblock %}

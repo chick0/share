@@ -1,0 +1,181 @@
+::selection {
+    background-color: #f3969a;
+}
+
+
+html{
+    color: #5a5a5a;
+    background-color: #DBDBDB;
+    text-align: center;
+}
+
+
+input, textarea{
+    border: 1px solid #5a5a5a;
+    border-radius: 0.4rem;
+    background-color: #DBDBDB;
+    color: #5a5a5a;
+    padding: 10px;
+}
+
+
+a, button {
+    text-decoration: none;
+    border: none;
+    padding: 0;
+    background-color: #DBDBDB;
+    color: #5a5a5a;
+}
+
+
+h1, h2 {
+    color: #000;
+}
+
+
+.high{
+    background-color: #ffcc4d;
+}
+
+
+.s{
+    font-size: smaller;
+}
+.l{
+    font-size: larger;
+}
+
+
+.btn{
+    display: inline-block;
+    border: #5a5a5a 1px solid;
+    border-radius: 0.3rem;
+    padding: 10px;
+    font-size: 13px;
+    background-color: #DBDBDB;
+    color: #5a5a5a;
+}
+.btn:hover{
+    background-color: #5a5a5a;
+    color: #DBDBDB;
+}
+
+
+.nav{
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 10px;
+    position: fixed;
+    top: 0; left: 0px;
+    width: 100%;
+}
+.nav-right-bottom{
+    text-align: right;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    position: fixed;
+    bottom: 0; right: 0px;
+    width: 100%;
+}
+
+
+.title{
+    padding-top: 60px;
+    padding-bottom: 30px;
+    font-size: 90px;
+}
+
+
+.menu{
+    margin-left: auto;
+    margin-right: auto;
+    left:0;
+    right:0;
+    position: fixed;
+    bottom: 80px;
+}
+.n-menu{
+    margin-left: auto;
+    margin-right: auto;
+    left:0;
+    right:0;
+    margin-top: 60px;
+    margin-bottom: 130px;
+}
+
+
+.lf {
+    text-align: left;
+    margin-left: 5%;
+}
+
+
+ul, ol {
+    padding-left: 25px;
+}
+li{
+    margin-bottom: 10px;
+}
+
+
+td {
+    padding-left: 10px;
+    border-left: 1px solid #5a5a5a;
+}
+
+
+hr{
+    border: none;
+    border-bottom: 0.7px solid #5a5a5a;
+}
+
+
+.message-box{
+    margin-top: 36%;
+}
+
+
+.list{
+    padding-left:5px;
+    list-style: none;
+}
+
+
+@media (max-width: 420px) {
+    .title{
+        font-size: 40px;
+    }
+}
+@media (max-width: 320px) {
+    .btn{
+        font-size: 11px;
+    }
+}
+@media (min-width: 700px) {
+    .btn{
+        font-size: 16px;
+    }
+
+
+    .lf {
+        margin-left: 20%;
+    }
+
+
+    .nav{
+        margin-left: 20%;
+    }
+    .nav-right-bottom{
+        margin-right: 20%;
+    }
+
+
+    .message-box{
+        margin-top: 14%;
+    }
+
+
+    .list{
+        list-style: decimal;
+    }
+}

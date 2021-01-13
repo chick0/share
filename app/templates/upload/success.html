@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <h2>업로드 성공</h2>
+            <p>파일명 : <span class="high">{{ filename }}</span></p>
+
+            <a class="btn" href="{{ url_for('dl.download', idx=idx) }}">파일 다운로드</a>
+            <button class="btn copy" data-clipboard-text="{{ 'App.host'|load }}{{ url_for('dl.download', idx=idx) }}">링크 복사</button>
+        </section>
+
+        <section class="menu">
+            <a class="btn" href="{{ url_for('index.index') }}">메인 화면으로 돌아가기</a>
+        </section>
+{% endblock %}
+{% block script %}
+        <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+        <script>
+            new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!")});
+        </script>
+{% endblock %}

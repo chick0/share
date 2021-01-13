@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <form method="post" action="{{ url_for('upload.upload') }}" enctype="multipart/form-data">
+                <p><input type="file" name="upload" id="upload"></p>
+
+                <button class="btn" type="submit" style="width:30%;">업로드</button>
+            </form>
+        </section>
+
+        <section class="menu">
+            파일 용량은 50MB 까지 | 1일후 파일 삭제
+        </section>
+{% endblock %}
