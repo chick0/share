@@ -29,10 +29,16 @@ class File(db.Model):
         nullable=False
     )
 
-    def __init__(self, idx: str, filename: str, md5: str):
+    size = db.Column(
+        db.Integer,
+        nullable=False
+    )
+
+    def __init__(self, idx: str, filename: str, md5: str, size: int):
         self.idx = idx
         self.filename = filename
         self.md5 = md5
+        self.size = size
 
     def __repr__(self):
-        return f"<File idx={self.idx!r}, file_name={self.idx!r}>"
+        return f"<File idx={self.idx!r}, file_name={self.idx!r}>, size={self.size}"

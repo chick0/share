@@ -25,7 +25,7 @@ def get_file_by_idx(idx: str):
     ).first()
 
 
-def upload_file_by_data(stream: bytes, filename: str):
+def upload_file_by_data(stream: bytes, filename: str, size: int):
     stream_hash = md5(stream).hexdigest()
 
     def run():
@@ -42,6 +42,7 @@ def upload_file_by_data(stream: bytes, filename: str):
                 idx=idx,
                 md5=stream_hash,
                 filename=filename,
+                size=size
             )
 
             db.session.add(ctx)  # DB 세션에 추가
@@ -61,18 +62,19 @@ def upload():
 
     file = request.files['upload']
     stream = file.read()
+    size = len(stream)
 
     if len(file.filename) >= 100:
         return render_template(
             "upload/cancel.html",
             why="파일명이 너무 길어요 (100자 이하)"
         )
-    if len(stream) == 0:
+    if size == 0:
         return render_template(
             "upload/cancel.html",
             why="파일이 없음"
         )
-    if len(stream) > 50 * 1024 * 1024:
+    if size > 50 * 1024 * 1024:
         return render_template(
             "upload/cancel.html",
             why="파일의 용량이 너무 큼"
@@ -80,7 +82,8 @@ def upload():
 
     idx = upload_file_by_data(
         stream=stream,
-        filename=file.filename
+        filename=file.filename,
+        size=size
     )
 
     with open(path.join("upload", idx), mode="wb") as fp:
