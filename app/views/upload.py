@@ -71,6 +71,11 @@ def able():
         return "true"
 
 
+@bp.route("/status")
+def status():
+    return f"size: {get_all_size()}"
+
+
 @bp.route("/", methods=['POST'])
 def upload():
     if request.referrer is None:
