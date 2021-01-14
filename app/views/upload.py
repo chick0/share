@@ -19,6 +19,14 @@ bp = Blueprint(
 )
 
 
+def get_all_size():
+    size = 0
+    for ctx in File.query.all():
+        size += ctx.size
+
+    return size
+
+
 def get_file_by_idx(idx: str):
     return File.query.filter_by(
         idx=idx
@@ -55,10 +63,24 @@ def upload_file_by_data(stream: bytes, filename: str, size: int):
     return run()
 
 
+@bp.route("/able")
+def able():
+    if get_all_size() > 80 * 1024 * 1024 * 1024:
+        return "false"
+    else:
+        return "true"
+
+
 @bp.route("/", methods=['POST'])
 def upload():
     if request.referrer is None:
         abort(400)
+
+    if get_all_size() > 80 * 1024 * 1024 * 1024:
+        return render_template(
+            "upload/cancel.html",
+            why="지금은 업로드 할 수 없습니다"
+        )
 
     file = request.files['upload']
     stream = file.read()
