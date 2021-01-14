@@ -54,13 +54,10 @@ def upload_file_by_data(stream: bytes, filename: str):
     return run()
 
 
-@bp.route("/", methods=['GET', 'POST'])
+@bp.route("/", methods=['POST'])
 def upload():
     if request.referrer is None:
         abort(400)
-
-    if request.method != "POST":
-        abort(405)
 
     file = request.files['upload']
     stream = file.read()
