@@ -11,7 +11,7 @@
             <a class="btn" href="{{ url_for('dl.download', idx=ctx.idx, filename=ctx.filename) }}" target="_blank" style="width:30%;">파일 다운로드</a>
         </section>
 
-        <section class="menu l">
+        <section class="menu">
             MD5 <a id="md5" class="high copy" data-clipboard-target="#md5">{{ ctx.md5 }}</a>
         </section>
 {% endblock %}
