@@ -1,5 +1,10 @@
 {% extends 'layout.html' %}
 {% block content %}
+        <section class="lf">
+            <span>{{ ctx.upload }}</span><br>
+            <span>{{ ctx.size|size }}</span>
+        </section>
+
         <section class="message-box l">
             <h2>파일 다운로드</h2>
             <p>파일명 : <span class="high">{{ ctx.filename }}</span></p>
