@@ -73,7 +73,7 @@ def able():
 
 @bp.route("/status")
 def status():
-    return f"size: {get_all_size()}"
+    return f"{get_all_size() / 1024 / 1024:.2f}MB"
 
 
 @bp.route("/", methods=['POST'])
