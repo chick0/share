@@ -4,7 +4,7 @@ import option
 
 # 파일 사이즈 처리 필터
 def size(value: int):
-    return f"{value / 1024 / 2024:.2f}MB"
+    return f"{int(value) / 1024 / 1024:.2f}MB"
 
 
 # 옵션 로딩 필터
