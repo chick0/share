@@ -41,4 +41,4 @@ class File(db.Model):
         self.size = size
 
     def __repr__(self):
-        return f"<File idx={self.idx!r}, file_name={self.idx!r}>, size={self.size}"
+        return f"<File idx={self.idx!r}, file_name={self.idx!r}, size={self.size}>"
