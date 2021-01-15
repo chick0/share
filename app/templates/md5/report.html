@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <h2>파일 신고</h2>
+        </section>
+
+        <section class="lf">
+            <form method="post">
+                <textarea id="text" name="text" style="width:60%;"></textarea><br>
+                <input type="text" name="csrf_token" value="{{ csrf }}" readonly="readonly" hidden="hidden">
+                <button class="btn" type="submit">신고 하기</button>
+            </form>
+        </section>
+{% endblock %}
+{% block script %}
+        <script>
+            let worker;
+            document.querySelector("#text").addEventListener("focus",function(){
+                worker = setInterval(function(){
+                    document.querySelector("#text").style.height = "1px";
+                    document.querySelector("#text").style.height = (document.querySelector("#text").scrollHeight+8)+"px";
+                }, 450);
+            });
+            document.querySelector("#text").addEventListener("blur",function(){
+                clearInterval(worker);
+            });
+        </script>
+{% endblock %}
