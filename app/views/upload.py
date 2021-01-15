@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from os import path
+from os import path, remove
 from uuid import uuid4
 from hashlib import md5
+from datetime import datetime, timedelta
 
 from flask import Blueprint
 from flask import abort, request
@@ -74,6 +75,24 @@ def able():
 @bp.route("/status")
 def status():
     return f"{get_all_size() / 1024 / 1024:.2f}MB"
+
+
+@bp.route("/clean")
+def clean():
+    status_code = 200
+    for file in File.query.all():
+        delete_time = file.upload + timedelta(days=1)
+        now = datetime.now()
+
+        if now >= delete_time:
+            try:
+                remove(path=path.join("upload", file.idx))
+                db.session.delete(file)
+                db.session.commit()
+            except (FileNotFoundError, PermissionError, Exception):
+                status_code = 500
+
+    return str(len(File.query.all())), status_code
 
 
 @bp.route("/", methods=['POST'])
