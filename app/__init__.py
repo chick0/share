@@ -38,6 +38,7 @@ def create_app():          # Flask 앱
     __import__("models")
 
     # 템플릿 필터 등록
+    app.add_template_filter(template_filter.size)
     app.add_template_filter(template_filter.load)
 
     # ORM 등록 & 초기화
