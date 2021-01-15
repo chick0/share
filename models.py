@@ -42,3 +42,30 @@ class File(db.Model):
 
     def __repr__(self):
         return f"<File idx={self.idx!r}, file_name={self.filename!r}, size={self.size}>"
+
+
+class Report(db.Model):
+    md5 = db.Column(
+        db.String(32),
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    upload = db.Column(
+        db.DateTime,
+        default=func.now(),
+        nullable=False
+    )
+
+    text = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    def __init__(self, md5: str, text: str):
+        self.md5 = md5
+        self.text = text
+
+    def __repr__(self):
+        return f"<File idx={self.idx}, md5={self.md5!r}>"
