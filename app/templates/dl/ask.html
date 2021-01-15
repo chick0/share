@@ -12,7 +12,9 @@
         </section>
 
         <section class="menu">
-            MD5 <a id="md5" class="high copy" data-clipboard-target="#md5">{{ ctx.md5 }}</a>
+            <a class="copy" data-clipboard-text="{{ ctx.md5 }}">MD5 복사하기</a>
+            <span>|</span>
+            <a href="{{ url_for('md5.report', md5=ctx.md5) }}">파일 신고하기</a>
         </section>
 {% endblock %}
 {% block script %}
