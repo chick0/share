@@ -2,4 +2,5 @@ User-agent: *
 Allow: /$
 Disallow: /
 Disallow: /dl
+Disallow: /md5
 Disallow: /upload
