@@ -54,13 +54,19 @@ class Report(db.Model):
 
     upload = db.Column(
         db.DateTime,
-        default=func.now(),
-        nullable=False
+        nullable=False,
+        default=func.now()
     )
 
     text = db.Column(
         db.Text,
         nullable=False
+    )
+
+    ban = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False
     )
 
     def __init__(self, md5: str, text: str):
