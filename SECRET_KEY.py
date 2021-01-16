@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from os import path, urandom
 
-SECRET_KEY = urandom(32)
 with open(path.join("conf", "SECRET_KEY"), mode="wb") as fp:
-    fp.write(SECRET_KEY)
+    fp.write(urandom(32))
 
-print("New SECRET_KEY is :", SECRET_KEY)
+print("생성 완료")
