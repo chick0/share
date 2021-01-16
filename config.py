@@ -15,7 +15,7 @@ try:
     SQLALCHEMY_DATABASE_URI = f"mysql://{conf['account']['user']}:{conf['account']['password']}" \
                               f"@{conf['database']['host']}/{conf['database']['database']}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-except KeyError as e:
+except KeyError:
     print("데이터베이스 접속 정보를 불러오지 못함\n"
           "- 'database.ini' 파일을 수정하세요")
     with open("database.ini", mode="w") as fp:
