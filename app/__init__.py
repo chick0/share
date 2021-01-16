@@ -17,21 +17,9 @@ def create_app():          # Flask 앱
 
     @app.after_request
     def set_header(response):
-        response.headers['X-Frame-Options'] = "deny"            # Clickjacking
-        response.headers['X-XSS-Protection'] = "1"              # Cross-site scripting
-        response.headers['X-Content-Type-Options'] = "nosniff"  # Check MIMETYPE
-
-        if request.path.endswith(".css"):
-            response.headers['Content-Type'] = "text/css; charset=utf-8"
-        if request.path.endswith(".txt"):
-            response.headers['Content-Type'] = "text/plain; charset=utf-8"
-
-        if request.path.endswith(".json"):
-            response.headers['Content-Type'] = "application/json; charset=utf-8"
-        if request.path.endswith(".js"):
-            response.headers['Content-Type'] = "application/javascript; charset=utf-8"
-
-        response.headers['X-Powered-By'] = "chick_0"
+        response.headers['X-Frame-Options'] = "deny"  # Clickjacking
+        response.headers['X-XSS-Protection'] = "1"    # Cross-site scripting
+        response.headers['X-Powered-By'] = "chick_0"  # YEAH!
         return response
 
     # DB 모델 등록
