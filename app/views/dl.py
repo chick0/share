@@ -37,7 +37,6 @@ def ask(idx: str):
         abort(404)
 
     report = get_report_by_hash(md5=ctx.md5)
-    print(report)
     if report is not None:
         try:
             session[ctx.md5]
