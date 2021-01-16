@@ -93,7 +93,7 @@ def download(idx: str, filename: str):
                 content_type="application/octet-stream",
             )
 
-            response.headers["Content-Disposition"] = f"attachment; filename={ctx.filename}"
+            response.headers["Content-Disposition"] = f"attachment; filename={ctx.filename}".encode("utf-8")
             return response
         except PermissionError:
             abort(403)
