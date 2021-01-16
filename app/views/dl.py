@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from os import path, remove
-from json import dumps
 from datetime import datetime, timedelta
 
 from flask import Blueprint
@@ -8,7 +7,6 @@ from flask import request, session
 from flask import render_template
 from flask import abort, Response
 from flask import redirect, url_for
-from sqlalchemy.exc import OperationalError
 
 from app import db
 from models import File, Report
@@ -30,31 +28,6 @@ def get_report_by_hash(md5: str):
     return Report.query.filter_by(
         md5=md5
     ).first()
-
-
-@bp.route("/<string:idx>/md5")
-def _md5(idx: str):
-    try:
-        ctx = get_file_by_idx(idx=idx)
-    except OperationalError:
-        return Response(
-            status=500,
-            mimetype="application/json",
-            response=dumps({"error": "database connection error"})
-        )
-
-    if ctx is None:
-        return Response(
-            status=404,
-            mimetype="application/json",
-            response=dumps({"error": "file not found"})
-        )
-
-    return Response(
-        status=200,
-        mimetype="application/json",
-        response=dumps({"md5": ctx.md5})
-    )
 
 
 @bp.route("/<string:idx>")
