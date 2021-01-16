@@ -79,20 +79,20 @@ def status():
 
 @bp.route("/clean")
 def clean():
-    status_code = 200
     for file in File.query.all():
         delete_time = file.upload + timedelta(days=1)
         now = datetime.now()
 
         if now >= delete_time:
             try:
-                remove(path=path.join("upload", file.idx))
-                db.session.delete(file)
-                db.session.commit()
+                if path.exists(path.join("upload", file.idx)):
+                    remove(path=path.join("upload", file.idx))
+                    db.session.delete(file)
+                    db.session.commit()
             except (FileNotFoundError, PermissionError, Exception):
-                status_code = 500
+                pass
 
-    return str(len(File.query.all())), status_code
+    return "OK"
 
 
 @bp.route("/", methods=['POST'])
