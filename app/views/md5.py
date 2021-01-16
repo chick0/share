@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app import db
 from models import File, Report
+from app.module import webhook
 
 bp = Blueprint(
     name=__name__.split(".")[-1],
@@ -66,6 +67,7 @@ def report(md5: str):
                 db.session.add(ctx)
                 db.session.commit()
 
+                webhook.send(f"{md5}에 대한 신고가 등록됨")
                 return redirect(url_for("index.index"))
         except KeyError:
             pass
