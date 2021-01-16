@@ -74,4 +74,4 @@ class Report(db.Model):
         self.text = text
 
     def __repr__(self):
-        return f"<File idx={self.idx}, md5={self.md5!r}>"
+        return f"<Report md5={self.md5!r}, ban={self.ban}>"
