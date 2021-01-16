@@ -14,7 +14,7 @@
         <meta property="og:title" content="{{ title }}">
         <meta property="og:description" content="파일공유">
 
-        <link rel="canonical" href="{{ 'App.host'|load }}{{ request.path }}">
+        <link rel="canonical" href="{{ g.host }}{{ request.path }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     </head>
     <body>

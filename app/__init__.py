@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from os import path, mkdir
 
-from flask import Flask, request
+from flask import Flask, g
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from app.module import error, template_filter
+from app.module import error
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -14,6 +14,11 @@ migrate = Migrate()
 def create_app():          # Flask 앱
     app = Flask(__name__)  # 앱 만들기
     app.config.from_object(obj=__import__("config"))
+
+    @app.before_request
+    def set_global():
+        g.host = "https://share.ch1ck.xyz"
+        g.email = "chick_0@ch1ck.xyz"
 
     @app.after_request
     def set_header(response):
@@ -26,8 +31,8 @@ def create_app():          # Flask 앱
     __import__("models")
 
     # 템플릿 필터 등록
-    app.add_template_filter(template_filter.size)
-    app.add_template_filter(template_filter.load)
+    app.add_template_filter(f=lambda x: f"{int(x) / 1024 / 1024:.2f}MB",
+                            name="size")
 
     # ORM 등록 & 초기화
     db.init_app(app)
@@ -40,7 +45,7 @@ def create_app():          # Flask 앱
                 blueprint=getattr(getattr(views, view_point), "bp")
             )
         except AttributeError:        # 블루프린트 객체가 없다면
-            print(f"[!] '{view_point}' is not view point")
+            print(f"[!] '{view_point}' 는 뷰 포인트가 아닙니다")
 
     # 오류 핸들러
     app.register_error_handler(400, error.bad_request)

@@ -1,31 +1,38 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logging
+from os import path, mkdir
+from datetime import datetime
+from logging import getLogger, FileHandler
 
-import waitress
+from waitress import serve
 from paste.translogger import TransLogger
 
 import app
-from option import App, Server, Log
 
+
+# # # # # # # # # # # # # # #
+PORT = 5555
+LOG_PATH = path.join("log")
+# # # # # # # # # # # # # # #
 if __name__ == "__main__":
-    print(f"Starting '{App.name}' Project...")
+    if not path.isdir(path.join(LOG_PATH)):
+        mkdir(LOG_PATH)
 
-    logger = logging.getLogger(
+    logger = getLogger(
         name="wsgi"
     )
 
     logger.addHandler(
-        hdlr=logging.FileHandler(
-            filename=Log.file
+        hdlr=FileHandler(
+            filename=path.join(LOG_PATH, f"{datetime.today().strftime('%Y-%m-%d %Hh %Mm %Ss')}.log")
         )
     )
 
     app = app.create_app()
-    waitress.serve(
+    serve(
         app=TransLogger(
             application=app,
             setup_console_handler=True
         ),
-        port=Server.port
+        port=PORT
     )
