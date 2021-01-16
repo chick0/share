@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="lf">
+            <span>{{ ctx.upload }}</span><br>
+            <span>{{ ctx.size|size }}</span>
+        </section>
+
+        <section class="message-box l">
+            <h2>경고! 신고된 파일</h2>
+            <p>파일을 다운로드하기 전에 다시 확인하세요</p>
+            <a class="btn" href="{{ url_for('dl.warn_off', idx=ctx.idx, md5=ctx.md5) }}" style="width:30%;">경고 무시하기</a>
+        </section>
+
+        <section class="menu">
+            <a class="copy" data-clipboard-text="{{ ctx.md5 }}">MD5 복사하기</a>
+            <span>|</span>
+            <a id="report">신고정보 보기</a>
+        </section>
+{% endblock %}
+{% block script %}
+        <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+        <script>
+            new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!"),window.getSelection().removeAllRanges();});
+            document.querySelector("#report").addEventListener("click",function(){
+                window.alert("신고날짜: {{ report.upload }}");
+            });
+        </script>
+{% endblock %}
