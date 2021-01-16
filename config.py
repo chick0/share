@@ -3,6 +3,8 @@ from os import path, mkdir
 from sys import exit
 from configparser import ConfigParser
 
+if not path.exists("conf"):
+    mkdir("conf")
 
 # 요청 용량 제한 | 50MB + 요청 헤더 고려 1MB
 MAX_CONTENT_LENGTH = 51 * 1024 * 1024
@@ -11,7 +13,7 @@ MAX_CONTENT_LENGTH = 51 * 1024 * 1024
 # DB 접속 정보 & 설정
 try:
     conf = ConfigParser()
-    conf.read("database.ini")
+    conf.read(path.join("conf", "database.ini"))
 
     SQLALCHEMY_DATABASE_URI = f"mysql://{conf['account']['user']}:{conf['account']['password']}" \
                               f"@{conf['database']['host']}/{conf['database']['database']}"
@@ -19,9 +21,6 @@ try:
 except KeyError:
     print("데이터베이스 접속 정보를 불러오지 못함\n"
           "- 'conf/database.ini' 파일을 수정하세요")
-    if not path.exists("conf"):
-        mkdir("conf")
-
     with open(path.join("conf", "database.ini"), mode="w") as fp:
         fp.write("[account]\n")
         fp.write("user=\n")
