@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 
 from app import db
-from config import UPLOAD_FOLDER
+from config import UPLOAD_FOLDER, MAX_FILE_SIZE, MAX_UPLOAD_SIZE
 from models import File
 
 bp = Blueprint(
@@ -49,7 +49,7 @@ def upload():
     if request.referrer is None:
         abort(400)
 
-    if get_all_size() > 80 * 1024 * 1024 * 1024:
+    if get_all_size() > MAX_UPLOAD_SIZE:
         return render_template(
             "upload/cancel.html",
             why="지금은 업로드 할 수 없습니다"
@@ -61,17 +61,17 @@ def upload():
     g.stream = file.read()
     g.size = len(g.stream)
 
-    if len(g.filename) >= 100:
+    if len(g.filename) >= 255:
         return render_template(
             "upload/cancel.html",
-            why="파일명이 너무 길어요 (100자 이하)"
+            why="파일명이 너무 길어요 (255자 이하)"
         )
     if g.size == 0:
         return render_template(
             "upload/cancel.html",
             why="파일이 없음"
         )
-    if g.size > 50 * 1024 * 1024:
+    if g.size > MAX_FILE_SIZE:
         return render_template(
             "upload/cancel.html",
             why="파일의 용량이 너무 큼"

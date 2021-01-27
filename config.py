@@ -12,9 +12,18 @@ BASE_DIR = path.dirname(__file__)
 UPLOAD_FOLDER = path.join(BASE_DIR, "upload")
 print(f"UPLOAD_FOLDER={UPLOAD_FOLDER}")
 
-# 요청 용량 제한 | 50MB + 요청 헤더 고려 1MB
-MAX_FILE_SIZE = 50
-MAX_CONTENT_LENGTH = (MAX_FILE_SIZE + 1) * 1024 * 1024
+MB = 1024 * 1024
+GB = MB * 1024
+
+# 업로드 용량 제한 50MB + 요청 헤더 고려 1MB
+MAX_FILE_SIZE = 50 * MB
+MAX_CONTENT_LENGTH = MAX_FILE_SIZE + 1 * MB
+
+# 총 업로드 용량 제한
+MAX_UPLOAD_SIZE = 80 * GB
+
+
+del MB, GB
 
 
 # DB 접속 정보 & 설정
