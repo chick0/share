@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
-from os import path, remove
+from os import path
 from uuid import uuid4
 from hashlib import md5
-from datetime import datetime, timedelta
+from functools import reduce
 
 from flask import Blueprint
-from flask import abort, request
+from flask import abort, request, g
 from flask import redirect, url_for
 from flask import render_template
+from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 
 from app import db
+from config import UPLOAD_FOLDER
 from models import File
 
 bp = Blueprint(
@@ -21,78 +23,25 @@ bp = Blueprint(
 
 
 def get_all_size():
-    size = 0
-    for ctx in File.query.all():
-        size += ctx.size
-
-    return size
+    return reduce(lambda old, now: old + now, [ctx.size for ctx in File.query.all()])
 
 
-def get_file_by_idx(idx: str):
-    return File.query.filter_by(
-        idx=idx
-    ).first()
+def upload_file():
+    g.idx = str(uuid4())
 
-
-def upload_file_by_data(stream: bytes, filename: str, size: int):
-    stream_hash = md5(stream).hexdigest()
-
-    def run():
-        using_uuid = [ctx.idx for ctx in File.query.all()]
-        idx = str(uuid4())
-        while True:
-            if idx in using_uuid:
-                idx = uuid4()
-            if idx not in using_uuid:
-                break
-
+    if g.idx not in [ctx.idx for ctx in File.query.all()]:
         try:
             ctx = File(
-                idx=idx,
-                md5=stream_hash,
-                filename=filename,
-                size=size
+                idx=g.idx,
+                md5=g.md5,
+                filename=g.filename,
+                size=g.size
             )
 
-            db.session.add(ctx)  # DB 세션에 추가
-            db.session.commit()  # 변경 사항 저장
-
-            return idx
-        except IntegrityError:
-            return run()
-
-    return run()
-
-
-@bp.route("/able")
-def able():
-    if get_all_size() > 80 * 1024 * 1024 * 1024:
-        return "false"
-    else:
-        return "true"
-
-
-@bp.route("/status")
-def status():
-    return f"{get_all_size() / 1024 / 1024:.2f}MB"
-
-
-@bp.route("/clean")
-def clean():
-    for file in File.query.all():
-        delete_time = file.upload + timedelta(days=1)
-        now = datetime.now()
-
-        if now >= delete_time:
-            try:
-                if path.exists(path.join("upload", file.idx)):
-                    remove(path=path.join("upload", file.idx))
-                    db.session.delete(file)
-                    db.session.commit()
-            except (FileNotFoundError, PermissionError, Exception):
-                pass
-
-    return "OK"
+            db.session.add(ctx)
+            db.session.commit()
+        except (IntegrityError, Exception):
+            upload_file()
 
 
 @bp.route("/", methods=['POST'])
@@ -107,40 +56,40 @@ def upload():
         )
 
     file = request.files['upload']
-    stream = file.read()
-    size = len(stream)
 
-    if len(file.filename) >= 100:
+    g.filename = secure_filename(file.filename)
+    g.stream = file.read()
+    g.size = len(g.stream)
+
+    if len(g.filename) >= 100:
         return render_template(
             "upload/cancel.html",
             why="파일명이 너무 길어요 (100자 이하)"
         )
-    if size == 0:
+    if g.size == 0:
         return render_template(
             "upload/cancel.html",
             why="파일이 없음"
         )
-    if size > 50 * 1024 * 1024:
+    if g.size > 50 * 1024 * 1024:
         return render_template(
             "upload/cancel.html",
             why="파일의 용량이 너무 큼"
         )
 
-    idx = upload_file_by_data(
-        stream=stream,
-        filename=file.filename,
-        size=size
-    )
+    g.md5 = md5(g.stream).hexdigest()
+    upload_file()
 
-    with open(path.join("upload", idx), mode="wb") as fp:
-        fp.write(stream)
-
-    return redirect(url_for(".success", idx=idx))
+    file.save(path.join(UPLOAD_FOLDER, g.idx))
+    return redirect(url_for(".success", idx=g.idx))
 
 
 @bp.route("/success/<string:idx>")
 def success(idx: str):
-    ctx = get_file_by_idx(idx=idx)
+    ctx = File.query.filter_by(
+        idx=idx
+    ).first()
+
     if ctx is None:
         abort(404)
 

@@ -6,8 +6,15 @@ from configparser import ConfigParser
 if not path.exists("conf"):
     mkdir("conf")
 
+
+# 업로드 풀더
+BASE_DIR = path.dirname(__file__)
+UPLOAD_FOLDER = path.join(BASE_DIR, "upload")
+print(f"UPLOAD_FOLDER={UPLOAD_FOLDER}")
+
 # 요청 용량 제한 | 50MB + 요청 헤더 고려 1MB
-MAX_CONTENT_LENGTH = 51 * 1024 * 1024
+MAX_FILE_SIZE = 50
+MAX_CONTENT_LENGTH = (MAX_FILE_SIZE + 1) * 1024 * 1024
 
 
 # DB 접속 정보 & 설정
