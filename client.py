@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from urllib import request
 
+from production import PORT
+
 if __name__ == "__main__":
-    with request.urlopen("http://localhost:5555/upload/clean", timeout=1) as resp:
+    with request.urlopen(f"http://localhost:{PORT}/clean", timeout=1) as resp:
         print(resp.read().decode())
