@@ -14,7 +14,7 @@ class File(db.Model):
     )
 
     filename = db.Column(
-        db.String(100),
+        db.String(255),
         nullable=False
     )
 
@@ -41,7 +41,7 @@ class File(db.Model):
         self.size = size
 
     def __repr__(self):
-        return f"<File idx={self.idx!r}, file_name={self.filename!r}, size={self.size}>"
+        return f"<File idx={self.idx!r}>"
 
 
 class Report(db.Model):
@@ -74,4 +74,4 @@ class Report(db.Model):
         self.text = text
 
     def __repr__(self):
-        return f"<Report md5={self.md5!r}, ban={self.ban}>"
+        return f"<Report md5={self.md5!r}>"
