@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from app.module import error
+from config import UPLOAD_FOLDER
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -57,7 +58,7 @@ def create_app():          # Flask 앱
     app.register_error_handler(500, error.internal_server_error)
 
     # 업로드 파일 경로
-    if not path.exists("upload"):
-        mkdir("upload")
+    if not path.exists(UPLOAD_FOLDER):
+        mkdir(UPLOAD_FOLDER)
 
     return app
