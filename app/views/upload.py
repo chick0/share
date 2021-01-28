@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from os import path
+from os import path, urandom
 from uuid import uuid4
 from hashlib import md5
 
 from flask import Blueprint
-from flask import abort, request, g
+from flask import abort, request, g, session
 from flask import redirect, url_for
 from flask import render_template
 from werkzeug.utils import secure_filename
@@ -85,19 +85,26 @@ def upload():
     with open(path.join(UPLOAD_FOLDER, g.idx), mode="wb") as fp:
         fp.write(g.stream)
 
-    return redirect(url_for(".success", idx=g.idx))
+    idx = urandom(4).hex()
+    session[idx] = g.idx
+
+    return redirect(url_for(".success", idx=idx))
 
 
-@bp.route("/<string:idx>")
+@bp.route("/private/<string:idx>")
 def success(idx: str):
-    ctx = File.query.filter_by(
-        idx=idx
-    ).first()
+    try:
+        ctx = File.query.filter_by(
+            idx=session[idx]
+        ).first()
 
-    if ctx is None:
-        abort(404)
+        if ctx is None:
+            abort(404)
 
-    return render_template(
-        "upload/success.html",
-        idx=idx, filename=ctx.filename
-    )
+        return render_template(
+            "upload/success.html",
+            idx=ctx.idx,
+            filename=ctx.filename
+        )
+    except KeyError:
+        abort(403)
