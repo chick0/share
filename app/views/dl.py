@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-from os import path, remove
+from os import path
 from datetime import datetime, timedelta
 
 from flask import Blueprint
 from flask import request, session
 from flask import render_template
-from flask import abort, Response
+from flask import abort, send_file
 from flask import redirect, url_for
 
 from app import db
+from config import UPLOAD_FOLDER
 from models import File, Report
 
 bp = Blueprint(
@@ -75,17 +76,13 @@ def download(idx: str, filename: str):
     now = datetime.now()
 
     if now >= delete_time:
-        try:
-            remove(path=path.join("upload", idx))
-            db.session.delete(ctx)
-            db.session.commit()
+        db.session.delete(ctx)
+        db.session.commit()
 
-            return render_template(
-                "error/error.html",
-                message="만료된 파일입니다"
-            )
-        except (FileNotFoundError, PermissionError, Exception):
-            pass
+        return render_template(
+            "error/error.html",
+            message="만료된 파일입니다"
+        )
 
     report = get_report_by_hash(md5=ctx.md5)
     if report is not None:
@@ -95,19 +92,12 @@ def download(idx: str, filename: str):
                 message="이 파일은 차단된 파일입니다"
             ), 400
 
-    if path.exists(path.join("upload", idx)):
-        try:
-            with open(path.join("upload", idx), mode="rb") as fp:
-                stream = fp.read()
-
-            response = Response(
-                response=stream,
-                content_type="application/octet-stream",
-            )
-
-            response.headers["Content-Disposition"] = f"attachment; filename={ctx.filename}".encode("utf-8")
-            return response
-        except PermissionError:
-            abort(403)
+    if path.exists(path.join(UPLOAD_FOLDER, idx)):
+        return send_file(
+            filename_or_fp=path.join(UPLOAD_FOLDER, idx),
+            mimetype="application/octet-stream",
+            as_attachment=True,
+            attachment_filename=ctx.filename
+        )
     else:
         abort(404)
