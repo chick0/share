@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from re import compile
 from os import path, urandom
 from uuid import uuid4
 from hashlib import md5
@@ -7,7 +8,6 @@ from flask import Blueprint
 from flask import abort, request, g, session
 from flask import redirect, url_for
 from flask import render_template
-from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 
 from app import db
@@ -19,6 +19,11 @@ bp = Blueprint(
     import_name=__name__,
     url_prefix=f"/{__name__.split('.')[-1]}"
 )
+
+
+def secure_filename(filename: str):
+    pattern = compile(r"[^A-Za-z0-9가-힣_.-]")
+    return str(pattern.sub("", "_".join(filename.split())).strip("._"))
 
 
 def get_all_size(size: int = 0):
