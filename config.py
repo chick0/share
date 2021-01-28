@@ -3,7 +3,6 @@ from os import path, mkdir
 from sys import exit
 from configparser import ConfigParser
 
-BASE_DIR = path.dirname(__file__)
 if not path.exists("conf"):
     mkdir("conf")
 
@@ -11,23 +10,24 @@ if not path.exists("conf"):
 # 포트 설정
 PORT = 5000
 
-# 로그 경로
+
+# 경로
+BASE_DIR = path.dirname(__file__)
 LOG_PATH = path.join(BASE_DIR, "log")
-
-
-# 업로드 풀더
 UPLOAD_FOLDER = path.join(BASE_DIR, "upload")
-print(f"UPLOAD_FOLDER={UPLOAD_FOLDER}")
 
+
+# 용량 단위
 MB = 1024 * 1024
 GB = MB * 1024
+
+
+# 총 업로드 용량 제한
+MAX_UPLOAD_SIZE = 80 * GB
 
 # 업로드 용량 제한 50MB + 요청 헤더 고려 1MB
 MAX_FILE_SIZE = 50 * MB
 MAX_CONTENT_LENGTH = MAX_FILE_SIZE + 1 * MB
-
-# 총 업로드 용량 제한
-MAX_UPLOAD_SIZE = 80 * GB
 
 
 del MB, GB
