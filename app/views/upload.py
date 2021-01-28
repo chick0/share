@@ -93,11 +93,11 @@ def upload():
     idx = urandom(4).hex()
     session[idx] = g.idx
 
-    return redirect(url_for(".success", idx=idx))
+    return redirect(url_for(".private", idx=idx))
 
 
 @bp.route("/private/<string:idx>")
-def success(idx: str):
+def private(idx: str):
     try:
         ctx = File.query.filter_by(
             idx=session[idx]
@@ -107,7 +107,7 @@ def success(idx: str):
             abort(404)
 
         return render_template(
-            "upload/success.html",
+            "upload/private.html",
             idx=ctx.idx,
             filename=ctx.filename
         )
