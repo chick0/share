@@ -2,7 +2,6 @@
 from os import path
 from uuid import uuid4
 from hashlib import md5
-from functools import reduce
 
 from flask import Blueprint
 from flask import abort, request, g
@@ -22,8 +21,11 @@ bp = Blueprint(
 )
 
 
-def get_all_size():
-    return reduce(lambda old, now: old + now, [ctx.size for ctx in File.query.all()])
+def get_all_size(size: int = 0):
+    for ctx in File.query.all():
+        size += ctx.size
+
+    return size
 
 
 def upload_file():
