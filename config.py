@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from os import path, mkdir
+from os import path, listdir, mkdir
 from sys import exit
 from configparser import ConfigParser
 
 if not path.exists("conf"):
     mkdir("conf")
+
+conf = ConfigParser()
+for ini in listdir("conf"):
+    if ini.endswith(".ini"):
+        conf.read(path.join("conf", ini))
 
 
 # 포트 설정
@@ -18,26 +23,26 @@ UPLOAD_FOLDER = path.join(BASE_DIR, "upload")
 
 
 # 용량 단위
-MB = 1024 * 1024
+KB = 1024
+MB = KB * 1024
 GB = MB * 1024
 
 
 # 총 업로드 용량 제한
 MAX_UPLOAD_SIZE = 80 * GB
 
-# 업로드 용량 제한 50MB + 요청 헤더 고려 1MB
+# 업로드 용량 제한
 MAX_FILE_SIZE = 50 * MB
-MAX_CONTENT_LENGTH = MAX_FILE_SIZE + 1 * MB
+
+# 요청 크기 제한 | 업로드 용량 + HTTP 헤더 고려 8KB
+MAX_CONTENT_LENGTH = MAX_FILE_SIZE + (8 * KB)
 
 
-del MB, GB
+del KB, MB, GB
 
 
 # DB 접속 정보 & 설정
 try:
-    conf = ConfigParser()
-    conf.read(path.join("conf", "database.ini"))
-
     SQLALCHEMY_DATABASE_URI = f"mysql://{conf['account']['user']}:{conf['account']['password']}" \
                               f"@{conf['database']['host']}/{conf['database']['database']}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -69,4 +74,6 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Strict"
 
 
-del path, mkdir, exit, ConfigParser, conf
+del path, listdir, mkdir
+del exit
+del ConfigParser, conf
