@@ -88,7 +88,7 @@ def upload():
     return redirect(url_for(".success", idx=g.idx))
 
 
-@bp.route("/success/<string:idx>")
+@bp.route("/<string:idx>")
 def success(idx: str):
     ctx = File.query.filter_by(
         idx=idx
