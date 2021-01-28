@@ -14,7 +14,7 @@ def send(message: str):
                   data=dumps(payload).encode("utf-8"),
                   method="POST")
 
-    req.add_header("User-Agent", "Python-urllib")
+    req.add_header("User-Agent", "curl")
     req.add_header("Content-Type", "application/json")
 
     urlopen(req)
