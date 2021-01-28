@@ -82,7 +82,9 @@ def upload():
     g.md5 = md5(g.stream).hexdigest()
     upload_file()
 
-    file.save(path.join(UPLOAD_FOLDER, g.idx))
+    with open(path.join(UPLOAD_FOLDER, g.idx), mode="wb") as fp:
+        fp.write(g.stream)
+
     return redirect(url_for(".success", idx=g.idx))
 
 
