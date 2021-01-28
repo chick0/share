@@ -3,12 +3,19 @@ from os import path, mkdir
 from sys import exit
 from configparser import ConfigParser
 
+BASE_DIR = path.dirname(__file__)
 if not path.exists("conf"):
     mkdir("conf")
 
 
+# 포트 설정
+PORT = 5000
+
+# 로그 경로
+LOG_PATH = path.join(BASE_DIR, "log")
+
+
 # 업로드 풀더
-BASE_DIR = path.dirname(__file__)
 UPLOAD_FOLDER = path.join(BASE_DIR, "upload")
 print(f"UPLOAD_FOLDER={UPLOAD_FOLDER}")
 

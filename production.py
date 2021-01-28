@@ -8,12 +8,9 @@ from waitress import serve
 from paste.translogger import TransLogger
 
 import app
+from config import PORT, LOG_PATH
 
 
-# # # # # # # # # # # # # # #
-PORT = 5555
-LOG_PATH = path.join("log")
-# # # # # # # # # # # # # # #
 if __name__ == "__main__":
     if not path.isdir(path.join(LOG_PATH)):
         mkdir(LOG_PATH)
