@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.module import error
 from config import UPLOAD_FOLDER
+from conf import conf
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -18,8 +19,10 @@ def create_app():          # Flask 앱
 
     @app.before_request
     def set_global():
-        g.host = "https://share.ch1ck.xyz"
-        g.email = "chick_0@ch1ck.xyz"
+        try:
+            g.host = conf['app']['host']
+        except KeyError:
+            g.host = "http://localhost:5000"
 
     @app.after_request
     def set_header(response):
@@ -34,6 +37,8 @@ def create_app():          # Flask 앱
     # 템플릿 필터 등록
     app.add_template_filter(f=lambda x: f"{int(x) / 1024 / 1024:.2f}MB",
                             name="size")
+    app.add_template_filter(f=lambda x: f"{int(int(x) / 1024 / 1024)}MB",
+                            name="size_int")
 
     # ORM 등록 & 초기화
     db.init_app(app)

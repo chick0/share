@@ -10,6 +10,6 @@
         </section>
 
         <section class="menu">
-            용량 제한 50MB | 1일후 파일 삭제 | <a href="{{ url_for('md5.index') }}">검색하기</a>
+            용량 제한 {{ MAX_FILE_SIZE|size_int }} | 1일후 파일 삭제 | <a href="{{ url_for('md5.index') }}">검색하기</a>
         </section>
 {% endblock %}
