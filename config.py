@@ -23,7 +23,7 @@ MB = KB * 1024
 GB = MB * 1024
 
 # 총 업로드 용량 제한
-MAX_UPLOAD_SIZE = 80 * GB
+MAX_UPLOAD_SIZE = 50 * GB
 
 # 업로드 용량 제한
 MAX_FILE_SIZE = 50 * MB
