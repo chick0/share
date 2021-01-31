@@ -68,7 +68,7 @@ def upload():
     g.stream = file.read()
     g.size = len(g.stream)
 
-    if len(g.filename) >= 255:
+    if len(g.filename) > 255:
         return render_template(
             "upload/cancel.html",
             why="파일명이 너무 길어요 (255자 이하)"
