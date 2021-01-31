@@ -7,7 +7,7 @@ from app import db
 
 class File(db.Model):
     idx = db.Column(
-        db.String(36),
+        db.String(8),
         unique=True,
         primary_key=True,
         nullable=False
