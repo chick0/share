@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from re import compile
 from os import path, urandom
-from uuid import uuid4
+from secrets import token_bytes
 from hashlib import md5
 
 from flask import Blueprint
@@ -34,7 +34,7 @@ def get_all_size(size: int = 0):
 
 
 def upload_file():
-    g.idx = str(uuid4())
+    g.idx = token_bytes(4).hex()
 
     if g.idx not in [ctx.idx for ctx in File.query.all()]:
         try:
