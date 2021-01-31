@@ -4,10 +4,6 @@ from sys import exit
 
 from conf import conf
 
-# # # # # # # # # # # # # # # # # # # # # #
-
-# 포트 설정
-PORT = 5000
 
 # # # # # # # # # # # # # # # # # # # # # #
 

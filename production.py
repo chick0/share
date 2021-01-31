@@ -8,7 +8,8 @@ from waitress import serve
 from paste.translogger import TransLogger
 
 import app
-from config import PORT, LOG_PATH
+from client import PORT
+from config import LOG_PATH
 
 
 if __name__ == "__main__":
