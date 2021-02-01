@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint
+from flask import Blueprint, g
 from flask import request
 from flask import redirect, url_for
 from flask import abort, render_template
@@ -19,6 +19,8 @@ bp = Blueprint(
 
 @bp.route("/", methods=['GET', 'POST'])
 def index():
+    g.description = "업로드 한 파일을 검색할 수 있습니다"
+
     if request.method == "GET":
         return render_template(
             "md5/search.html"
@@ -45,6 +47,8 @@ def index():
 
 @bp.route("/report/<string:md5>", methods=['GET', 'POST'])
 def report(md5: str):
+    g.description = "파일 신고페이지"
+
     if request.method == "GET":
         return render_template(
             "md5/report.html"

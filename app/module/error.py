@@ -1,45 +1,46 @@
 # -*- coding: utf-8 -*-
 
+from flask import g
 from flask import render_template
 
 
-def bad_request(error):
+def render(error):
+    g.title = "오류"
+    # g.description = ""
+
     return render_template(
         "error/error.html",
-        message="잘못된 요청입니다"
+        message=g.description
     ), getattr(error, "code")
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+
+def bad_request(error):
+    g.description = "잘못된 요청입니다"
+    return render(error)
 
 
 def forbidden(error):
-    return render_template(
-        "error/error.html",
-        message="오류: 권한 부족"
-    ), getattr(error, "code")
+    g.description = "해당 페이지를 볼 수 있는 권한이 없습니다"
+    return render(error)
 
 
 def page_not_found(error):
-    return render_template(
-        "error/error.html",
-        message="해당 페이지를 찾을 수 없습니다"
-    ), getattr(error, "code")
+    g.description = "해당 페이지를 찾을 수 없습니다"
+    return render(error)
 
 
 def method_not_allowed(error):
-    return render_template(
-        "error/error.html",
-        message="잘못된 요청 방법 입니다"
-    ), getattr(error, "code")
+    g.description = "잘못된 요청 방법 입니다"
+    return render(error)
 
 
 def request_entity_too_large(error):
-    return render_template(
-        "error/error.html",
-        message="업로드 가능한 가장 큰 파일의 크기는 50MB 입니다"
-    ), getattr(error, "code")
+    g.description = "업로드 하려는 파일의 크기가 허용 용량을 초과하고 있습니다"
+    return render(error)
 
 
 def internal_server_error(error):
-    return render_template(
-        "error/error.html",
-        message="내부 스크립트 오류가 발생하였습니다"
-    ), getattr(error, "code")
+    g.description = "내부 스크립트 오류가 발생하였습니다"
+    return render(error)

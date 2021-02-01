@@ -2,17 +2,17 @@
 <html lang="ko">
     <head>
         <meta charset="utf-8">
-        <title>Share!</title>
+        <title>{{ g.title }}</title>
 
         <meta name="author" content="chick_0">
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no">
-        <meta name="keywords" content="파일, 공유, 파일공유">
-        <meta name="description" content="파일공유">
+        <meta name="keywords" content="파일, 공유, 파일공유, 비로그인, 비로그인 파일공유">
+        <meta name="description" content="{{ g.description }}">
 
         <meta property="og:type" content="website">
         <meta property="og:locale" content="ko_KR">
-        <meta property="og:title" content="Share!">
-        <meta property="og:description" content="파일공유">
+        <meta property="og:title" content="{{ g.title }}">
+        <meta property="og:description" content="{{ g.description }}">
 
         <link rel="canonical" href="{{ g.host }}{{ request.path }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">

@@ -4,8 +4,8 @@ from os import path, urandom
 from secrets import token_bytes
 from hashlib import md5
 
-from flask import Blueprint
-from flask import abort, request, g, session
+from flask import Blueprint, g
+from flask import abort, request, session
 from flask import redirect, url_for
 from flask import render_template
 from sqlalchemy.exc import IntegrityError
@@ -98,6 +98,8 @@ def upload():
 
 @bp.route("/private/<string:idx>")
 def private(idx: str):
+    g.description = "해당 페이지는 업로더만 확인이 가능합니다"
+
     try:
         ctx = File.query.filter_by(
             idx=session[idx]

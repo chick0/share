@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint
+from flask import Blueprint, g
 from flask import render_template
 
 from config import MAX_FILE_SIZE
@@ -14,6 +14,8 @@ bp = Blueprint(
 
 @bp.route("/")
 def index():
+    g.description = "쉽고 빠르게 파일을 공유해보세요"
+
     return render_template(
         "index/index.html",
         MAX_FILE_SIZE=MAX_FILE_SIZE

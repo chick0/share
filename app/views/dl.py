@@ -2,7 +2,7 @@
 from os import path
 from datetime import datetime, timedelta
 
-from flask import Blueprint
+from flask import Blueprint, g
 from flask import request, session
 from flask import render_template
 from flask import abort, send_file
@@ -45,12 +45,14 @@ def ask(idx: str):
             session[ctx.md5] = False  # True: download, False: Cancel
 
         if session[ctx.md5] is False:
+            g.description = "경고! 해당 파일은 신고된 파일입니다"
             return render_template(
                 "dl/warn.html",
                 ctx=ctx,
                 report=report
             )
 
+    g.description = "누군가가 공유한 파일입니다"
     return render_template(
         "dl/ask.html",
         ctx=ctx
@@ -79,6 +81,7 @@ def download(idx: str, filename: str):
         db.session.delete(ctx)
         db.session.commit()
 
+        g.description = "해당 파일은 만료된 파일입니다"
         return render_template(
             "error/error.html",
             message="만료된 파일입니다"
@@ -87,6 +90,7 @@ def download(idx: str, filename: str):
     report = get_report_by_hash(md5=ctx.md5)
     if report is not None:
         if report.ban is True:
+            g.description = "해당 파일은 다운로드가 불가능한 차단된 파일입니다"
             return render_template(
                 "error/error.html",
                 message="이 파일은 차단된 파일입니다"

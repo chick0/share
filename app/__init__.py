@@ -19,10 +19,10 @@ def create_app():          # Flask 앱
 
     @app.before_request
     def set_global():
-        try:
-            g.host = conf['app']['host']
-        except KeyError:
-            g.host = "http://localhost:5000"
+        g.host = conf['app']['host']
+
+        g.title = "Share!"
+        g.description = "파일공유"
 
     @app.after_request
     def set_header(response):
