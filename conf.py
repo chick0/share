@@ -6,6 +6,5 @@ if not path.exists("conf"):
     mkdir("conf")
 
 conf = ConfigParser()
-for ini in listdir("conf"):
-    if ini.endswith(".ini"):
-        conf.read(path.join("conf", ini))
+for ini in [ini for ini in listdir("conf") if ini.endswith(".ini")]:
+    conf.read(path.join("conf", ini))
