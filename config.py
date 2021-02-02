@@ -42,9 +42,9 @@ except KeyError:
 
 # 세션 용 시크릿 키
 try:
-    SECRET_KEY = open(path.join("conf", "SECRET_KEY"), mode="rb").read()
+    SECRET_KEY = open(".SECRET_KEY", mode="rb").read()
 except FileNotFoundError:
-    SECRET_KEY = getattr(__import__("SECRET_KEY"), "KEY")
+    SECRET_KEY = getattr(__import__("SECRET_KEY"), "SECRET_KEY")
 
 # 세션 쿠키 설정
 SESSION_COOKIE_NAME = "s"
