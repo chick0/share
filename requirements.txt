@@ -9,7 +9,6 @@ Mako==1.1.4
 MarkupSafe==1.1.1
 mysqlclient==2.0.3
 Paste==3.5.0
-pyotp==2.5.1
 python-dateutil==2.8.1
 python-editor==1.0.4
 six==1.15.0
