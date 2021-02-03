@@ -6,22 +6,11 @@
 
         <section class="lf">
             <form method="post">
-                <textarea id="text" name="text" style="width:60%;"></textarea><br>
-                <button class="btn" type="submit">신고 하기</button>
+                <p>
+                    <button class="btn" type="submit">신고 하기</button>
+                    <a class="btn" href="{{ url_for('md5.index') }}">검색 화면으로 돌아가기</a>
+                </p>
+                <textarea id="text" name="text" style="width:100%;" rows="6"></textarea>
             </form>
         </section>
-{% endblock %}
-{% block script %}
-        <script>
-            let worker;
-            document.querySelector("#text").addEventListener("focus",function(){
-                worker = setInterval(function(){
-                    document.querySelector("#text").style.height = "1px";
-                    document.querySelector("#text").style.height = (document.querySelector("#text").scrollHeight+8)+"px";
-                }, 450);
-            });
-            document.querySelector("#text").addEventListener("blur",function(){
-                clearInterval(worker);
-            });
-        </script>
 {% endblock %}
