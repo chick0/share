@@ -36,19 +36,18 @@ def get_all_size(size: int = 0):
 def upload_file():
     g.idx = token_bytes(4).hex()
 
-    if g.idx not in [ctx.idx for ctx in File.query.all()]:
-        try:
-            ctx = File(
-                idx=g.idx,
-                md5=g.md5,
-                filename=g.filename,
-                size=g.size
-            )
+    try:
+        ctx = File(
+            idx=g.idx,
+            md5=g.md5,
+            filename=g.filename,
+            size=g.size
+        )
 
-            db.session.add(ctx)
-            db.session.commit()
-        except (IntegrityError, Exception):
-            upload_file()
+        db.session.add(ctx)
+        db.session.commit()
+    except IntegrityError:
+        upload_file()
 
 
 @bp.route("/", methods=['POST'])
