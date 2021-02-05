@@ -34,6 +34,10 @@ class File(db.Model):
         nullable=False
     )
 
+    email = db.Column(
+        db.String(96)
+    )
+
     def __init__(self, idx: str, filename: str, md5: str, size: int):
         self.idx = idx
         self.filename = filename

@@ -49,6 +49,6 @@ except FileNotFoundError:
 # 세션 쿠키 설정
 SESSION_COOKIE_NAME = "s"
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SAMESITE = "Lax"
 
 # # # # # # # # # # # # # # # # # # # # # #

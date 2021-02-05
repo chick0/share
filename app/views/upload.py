@@ -2,7 +2,7 @@
 from re import compile
 from os import path, urandom
 from secrets import token_bytes
-from hashlib import md5
+from hashlib import md5, sha384
 
 from flask import Blueprint, g
 from flask import abort, request, session
@@ -43,6 +43,13 @@ def upload_file():
             filename=g.filename,
             size=g.size
         )
+
+        if g.use_github:
+            try:
+                email = sha384(session['email'].encode()).hexdigest()
+                ctx.email = email
+            except KeyError:
+                pass
 
         db.session.add(ctx)
         db.session.commit()

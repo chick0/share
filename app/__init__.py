@@ -24,6 +24,13 @@ def create_app():          # Flask 앱
         g.title = "Share!"
         g.description = "파일공유"
 
+        try:
+            g.client_id = conf['github']['client_id']
+            g.client_secret = conf['github']['client_secret']
+            g.use_github = True
+        except KeyError:
+            g.use_github = False
+
     @app.after_request
     def set_header(response):
         response.headers['X-Frame-Options'] = "deny"  # Clickjacking
