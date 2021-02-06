@@ -77,6 +77,9 @@ def detail(idx: str):
         email=sha384(session['email'].encode()).hexdigest()
     ).first()
 
+    if ctx is None:
+        return redirect(url_for(".dashboard"))
+
     return render_template(
         "github/detail.html",
         username=username,
@@ -101,3 +104,28 @@ def delete(idx: str):
     db.session.commit()
 
     return redirect(url_for(".dashboard"))
+
+
+@bp.route("/renew/<string:idx>")
+def renew(idx: str):
+    if not g.use_github:
+        return redirect(url_for("index.index"))
+
+    try:
+        email = sha384(session['email'].encode()).hexdigest()
+    except KeyError:
+        return redirect(url_for("index.index"))
+
+    ctx = File.query.filter_by(
+        idx=idx,
+        email=email
+    ).first()
+
+    if ctx is None:
+        return redirect(url_for(".dashboard"))
+
+    if ctx.delete < 14:
+        ctx.delete = ctx.delete + 1
+    db.session.commit()
+
+    return redirect(url_for(".detail", idx=idx))

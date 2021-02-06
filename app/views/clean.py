@@ -24,7 +24,7 @@ def clean():
             return "Invalid Secret-Key", 403
 
     for file in File.query.all():
-        delete_time = file.upload + timedelta(days=1)
+        delete_time = file.upload + timedelta(days=file.delete)
         now = datetime.now()
 
         if now >= delete_time:

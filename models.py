@@ -38,6 +38,12 @@ class File(db.Model):
         db.String(96)
     )
 
+    delete = db.Column(
+        db.Integer,
+        default=1,
+        nullable=False
+    )
+
     def __init__(self, idx: str, filename: str, md5: str, size: int):
         self.idx = idx
         self.filename = filename

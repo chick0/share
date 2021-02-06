@@ -74,7 +74,7 @@ def download(idx: str, filename: str):
     if ctx is None:
         abort(404)
 
-    delete_time = ctx.upload + timedelta(days=1)
+    delete_time = ctx.upload + timedelta(days=ctx.delete)
     now = datetime.now()
 
     if now >= delete_time:

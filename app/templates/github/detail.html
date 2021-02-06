@@ -20,8 +20,10 @@
                 <li>파일 업로드 일자: {{ ctx.upload }}</li>
                 <li>파일 MD5해시: {{ ctx.md5 }}</li>
                 <li>파일 크기: {{ ctx.size|size }}</li>
+                <li>파일 보관: {{ ctx.delete }}일</li>
             </ol>
 
             <a class="btn" href="{{ url_for('github.delete', idx=ctx.idx ) }}">파일 삭제하기</a>
+            <a class="btn" href="{{ url_for('github.renew', idx=ctx.idx ) }}">파일 연장하기</a>
         </section>
 {% endblock %}
