@@ -9,10 +9,17 @@ bp = Blueprint(
 )
 
 
-# ROBOTS
 @bp.route("/robots.txt")
 def robots():
     return send_file(
         "static/robots.txt",
         mimetype="text/plain"
+    )
+
+
+@bp.route("/favicon.ico")
+def favicon():
+    return send_file(
+        "static/img/favicon.ico",
+        mimetype="image/x-icon"
     )
