@@ -33,7 +33,7 @@ def callback():
         user_data = api.get_user_data(access_token=session['access_token'])
 
         session['login'] = user_data['login']
-        session['email'] = sha384(session['email'].encode()).hexdigest()
+        session['email'] = sha384(user_data['email'].encode()).hexdigest()
         session['username'] = user_data['name']
 
         return redirect(url_for("index.index"))
@@ -49,6 +49,7 @@ def dashboard():
     try:
         username = session['username']
         email = session['email']
+        print(email)
     except KeyError:
         return redirect(url_for("index.index"))
 
