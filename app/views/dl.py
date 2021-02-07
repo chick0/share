@@ -11,6 +11,8 @@ from flask import redirect, url_for
 from app import db
 from config import UPLOAD_FOLDER
 from models import File, Report
+from app.module.clean import file_remove
+
 
 bp = Blueprint(
     name=__name__.split(".")[-1],
@@ -80,6 +82,11 @@ def download(idx: str, filename: str):
     if now >= delete_time:
         db.session.delete(ctx)
         db.session.commit()
+
+        try:
+            file_remove()
+        except (FileNotFoundError, Exception):
+            pass
 
         g.description = "해당 파일은 만료된 파일입니다"
         return render_template(
