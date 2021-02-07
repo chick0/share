@@ -33,7 +33,7 @@ def callback():
         user_data = api.get_user_data(access_token=session['access_token'])
 
         session['login'] = user_data['login']
-        session['email'] = user_data['email']
+        session['email'] = sha384(session['email'].encode()).hexdigest()
         session['username'] = user_data['name']
 
         return redirect(url_for("index.index"))
@@ -48,11 +48,12 @@ def dashboard():
 
     try:
         username = session['username']
+        email = session['email']
     except KeyError:
         return redirect(url_for("index.index"))
 
     ctx = File.query.filter_by(
-        email=sha384(session['email'].encode()).hexdigest()
+        email=email
     ).all()
 
     return render_template(
@@ -69,12 +70,13 @@ def detail(idx: str):
 
     try:
         username = session['username']
+        email = session['email']
     except KeyError:
         return redirect(url_for("index.index"))
 
     ctx = File.query.filter_by(
         idx=idx,
-        email=sha384(session['email'].encode()).hexdigest()
+        email=email
     ).first()
 
     if ctx is None:
@@ -93,7 +95,7 @@ def delete(idx: str):
         return redirect(url_for("index.index"))
 
     try:
-        email = sha384(session['email'].encode()).hexdigest()
+        email = session['email']
     except KeyError:
         return redirect(url_for("index.index"))
 
@@ -112,7 +114,7 @@ def renew(idx: str):
         return redirect(url_for("index.index"))
 
     try:
-        email = sha384(session['email'].encode()).hexdigest()
+        email = session['email']
     except KeyError:
         return redirect(url_for("index.index"))
 
