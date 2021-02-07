@@ -13,6 +13,11 @@ bp = Blueprint(
 )
 
 
+@bp.route("/ok")
+def ok():
+    return "OK", 200
+
+
 @bp.route("/")
 def index():
     g.description = "쉽고 빠르게 파일을 공유해보세요"
