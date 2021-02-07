@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from re import compile
 from os import path, urandom
-from hashlib import md5, sha384
+from hashlib import md5
 
 from flask import Blueprint, g
 from flask import abort, request, session
@@ -45,7 +45,7 @@ def upload_file():
 
         if g.use_github:
             try:
-                email = sha384(session['email'].encode()).hexdigest()
+                email = session['email']
                 ctx.email = email
             except KeyError:
                 pass
