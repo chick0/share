@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from re import compile
 from os import path, urandom
-from secrets import token_bytes
 from hashlib import md5, sha384
 
 from flask import Blueprint, g
@@ -34,7 +33,7 @@ def get_all_size(size: int = 0):
 
 
 def upload_file():
-    g.idx = token_bytes(4).hex()
+    g.idx = urandom(4).hex()
 
     try:
         ctx = File(
@@ -96,7 +95,7 @@ def upload():
     with open(path.join(UPLOAD_FOLDER, g.idx), mode="wb") as fp:
         fp.write(g.stream)
 
-    idx = urandom(4).hex()
+    idx = urandom(2).hex()
     session[idx] = g.idx
 
     return redirect(url_for(".private", idx=idx))
