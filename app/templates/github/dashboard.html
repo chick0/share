@@ -4,18 +4,17 @@
             <h2>안녕하세요</h2>
         </section>
 
-        <section class="lf">
+        <section class="lf" style="padding-bottom:30px;">
             <p>로그인 유저: {{ username }}</p>
-            <ul>
-                <li><a class="btn" href="{{ url_for('index.index') }}">파일 업로드 하러 가기</a></li>
-            </ul>
+            <div>
+                <a class="btn" href="{{ url_for('index.index') }}">파일 업로드 하러 가기</a>
+            </div>
         </section>
 
         <section class="lf">
-            <hr>
             <ol>
         {% for file in ctx %}
-                <li><a href="{{ url_for('github.detail', idx=file.idx) }}">{{file.filename}}</a></li>
+                <li><a class="high" href="{{ url_for('github.detail', idx=file.idx) }}">{{file.filename}}</a></li>
         {% endfor %}
             </ol>
         </section>

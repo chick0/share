@@ -4,26 +4,45 @@
             <h2>안녕하세요</h2>
         </section>
 
-        <section class="lf">
+        <section class="lf" style="padding-bottom:30px;">
             <p>로그인 유저: {{ username }}</p>
-            <ul>
-                <li><a class="btn" href="{{ url_for('github.dashboard') }}">업로드 된 파일 보러가기</a></li>
-                <li><a class="btn" href="{{ url_for('index.index') }}">파일 업로드 하러 가기</a></li>
-            </ul>
+            <div>
+                <a class="btn" href="{{ url_for('index.index') }}">파일 업로드 하러 가기</a>
+                <a class="btn" href="{{ url_for('github.dashboard') }}">업로드 된 파일 보러가기</a>
+            </div>
         </section>
 
         <section class="lf">
-            <hr>
-            <ol>
-                <li>파일 고유번호: {{ ctx.idx }}</li>
-                <li>파일 이름: {{ ctx.filename }}</li>
-                <li>파일 업로드 일자: {{ ctx.upload }}</li>
-                <li>파일 MD5해시: {{ ctx.md5 }}</li>
-                <li>파일 크기: {{ ctx.size|size }}</li>
-                <li>파일 보관: {{ ctx.delete }}일</li>
-            </ol>
+            <table>
+                <tr>
+                    <th>파일 고유번호</th>
+                    <td><a class="high" href="{{ url_for('dl.ask', idx=ctx.idx) }}" target="_blank">{{ ctx.idx }}</a></td>
+                </tr>
+                <tr>
+                    <th>파일 이름</th>
+                    <td>{{ ctx.filename }}</td>
+                </tr>
+                <tr>
+                    <th>업로드 날짜</th>
+                    <td>{{ ctx.upload }}</td>
+                </tr>
+                <tr>
+                    <th>MD5</th>
+                    <td>{{ ctx.md5 }}</td>
+                </tr>
+                <tr>
+                    <th>파일 크기</th>
+                    <td>{{ ctx.size|size }}</td>
+                </tr>
+                <tr>
+                    <th>파일 보관</th>
+                    <td>{{ ctx.delete }}일</td>
+                </tr>
+            </table>
 
-            <a class="btn" href="{{ url_for('github.delete', idx=ctx.idx ) }}">파일 삭제하기</a>
-            <a class="btn" href="{{ url_for('github.renew', idx=ctx.idx ) }}">파일 연장하기</a>
+            <p>
+                <a class="btn" href="{{ url_for('github.delete', idx=ctx.idx ) }}">파일 삭제하기</a>
+                <a class="btn" href="{{ url_for('github.renew', idx=ctx.idx ) }}">파일 연장하기</a>
+            </p>
         </section>
 {% endblock %}
