@@ -10,6 +10,8 @@ from flask import render_template
 from app import db
 from models import File
 from app.module import api
+from app.module.clean import file_remove
+
 
 bp = Blueprint(
     name=__name__.split(".")[-1],
@@ -104,6 +106,11 @@ def delete(idx: str):
         email=email
     ).delete()
     db.session.commit()
+
+    try:
+        file_remove()
+    except (FileNotFoundError, Exception):
+        pass
 
     if request.args.get("go") == "index":
         return redirect(url_for("index.index"))
