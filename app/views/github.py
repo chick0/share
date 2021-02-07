@@ -49,7 +49,6 @@ def dashboard():
     try:
         username = session['username']
         email = session['email']
-        print(email)
     except KeyError:
         return redirect(url_for("index.index"))
 
