@@ -17,23 +17,27 @@ bp = Blueprint(
 )
 
 
+def db_remove():
+    for file in File.query.all():
+        if datetime.now() >= file.upload + timedelta(days=file.delete):
+            db.session.delete(file)
+    db.session.commit()
+
+
+def file_remove():
+    upload_idx = [ctx.idx for ctx in File.query.all()]
+    for idx in listdir(UPLOAD_FOLDER):
+        if idx not in upload_idx:
+            remove(path.join(UPLOAD_FOLDER, idx))
+
+
 @bp.route("")
 def clean():
     with open(".SECRET_KEY", mode="rb") as fp:
         if request.headers.get("Secret-Key") != sha384(fp.read()).hexdigest():
             return "Invalid Secret-Key", 403
 
-    for file in File.query.all():
-        delete_time = file.upload + timedelta(days=file.delete)
-        now = datetime.now()
-
-        if now >= delete_time:
-            db.session.delete(file)
-    db.session.commit()
-
-    upload_idx = [ctx.idx for ctx in File.query.all()]
-    for idx in listdir(UPLOAD_FOLDER):
-        if idx not in upload_idx:
-            remove(path.join(UPLOAD_FOLDER, idx))
+    db_remove()
+    file_remove()
 
     return "OK"
