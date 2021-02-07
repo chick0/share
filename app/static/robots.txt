@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /$
+Allow: /static
 Disallow: /
 Disallow: /dl
 Disallow: /md5
