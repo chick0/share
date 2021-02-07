@@ -105,6 +105,9 @@ def delete(idx: str):
     ).delete()
     db.session.commit()
 
+    if request.args.get("go") == "index":
+        return redirect(url_for("index.index"))
+
     return redirect(url_for(".dashboard"))
 
 
