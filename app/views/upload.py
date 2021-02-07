@@ -13,6 +13,7 @@ from app import db
 from config import UPLOAD_FOLDER, MAX_FILE_SIZE, MAX_UPLOAD_SIZE
 from models import File
 
+
 bp = Blueprint(
     name=__name__.split(".")[-1],
     import_name=__name__,

@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from app import db
 from models import File, Report
 
+
 bp = Blueprint(
     name=__name__.split(".")[-1],
     import_name=__name__,

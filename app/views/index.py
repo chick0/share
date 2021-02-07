@@ -5,6 +5,7 @@ from flask import render_template
 
 from config import MAX_FILE_SIZE
 
+
 bp = Blueprint(
     name=__name__.split(".")[-1],
     import_name=__name__,
