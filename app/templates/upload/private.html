@@ -7,10 +7,12 @@
             <p>
                 <a class="btn" href="{{ url_for('dl.ask', idx=idx) }}">다운로드</a>
                 <button class="btn copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=idx) }}">링크 복사</button>
-            {% if session.get("login") != none %}
-                <a class="btn" href="{{ url_for('github.delete', idx=idx ) }}?go=index">파일 삭제하기</a>
-            {% endif %}
             </p>
+        {% if session.get("login") != none %}
+            <p>
+                <a class="btn" href="{{ url_for('github.delete', idx=idx ) }}?go=index">파일 삭제하기</a>
+            </p>
+        {% endif %}
         </section>
 
         <section class="menu">
