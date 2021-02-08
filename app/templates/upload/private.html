@@ -6,11 +6,12 @@
 
             <p>
                 <a class="btn" href="{{ url_for('dl.ask', idx=idx) }}">다운로드</a>
-                <button class="btn copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=idx) }}">링크 복사</button>
+                <button class="btn copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=idx) }}">링크복사</button>
             </p>
         {% if session.get("login") != none %}
             <p>
-                <a class="btn" href="{{ url_for('github.delete', idx=idx ) }}?go=index">파일 삭제하기</a>
+                <a class="btn" href="{{ url_for('github.delete', idx=idx ) }}?go=index">삭제하기</a>
+                <a class="btn" href="{{ url_for('github.edit', idx=idx ) }}" target="_blank">수정하기</a>
             </p>
         {% endif %}
         </section>

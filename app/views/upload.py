@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from re import compile
 from os import path, urandom
 from hashlib import md5
 
@@ -10,6 +9,7 @@ from flask import render_template
 from sqlalchemy.exc import IntegrityError
 
 from app import db
+from app.module.secure import secure_filename
 from config import UPLOAD_FOLDER, MAX_FILE_SIZE, MAX_UPLOAD_SIZE
 from models import File
 
@@ -19,11 +19,6 @@ bp = Blueprint(
     import_name=__name__,
     url_prefix=f"/{__name__.split('.')[-1]}"
 )
-
-
-def secure_filename(filename: str):
-    pattern = compile(r"[^A-Za-z0-9가-힣_.-]")
-    return str(pattern.sub("", "_".join(filename.split())).strip("._"))
 
 
 def get_all_size(size: int = 0):

@@ -11,6 +11,7 @@ from app import db
 from models import File
 from app.module import api
 from app.module.clean import file_remove
+from app.module.secure import secure_filename
 
 
 bp = Blueprint(
@@ -89,6 +90,41 @@ def detail(idx: str):
         username=username,
         ctx=ctx
     )
+
+
+@bp.route("/edit/<string:idx>", methods=['GET', 'POST'])
+def edit(idx: str):
+    if not g.use_github:
+        return redirect(url_for("index.index"))
+
+    try:
+        username = session['username']
+        email = session['email']
+    except KeyError:
+        return redirect(url_for("index.index"))
+
+    ctx = File.query.filter_by(
+        idx=idx,
+        email=email
+    ).first()
+
+    if ctx is None:
+        return redirect(url_for(".dashboard"))
+
+    if request.method == "GET":
+        return render_template(
+            "github/edit.html",
+            username=username,
+            ctx=ctx
+        )
+
+    elif request.method == "POST":
+        filename = secure_filename(request.form.get("filename"))
+        if filename is not None and len(filename) != 0:
+            ctx.filename = filename
+            db.session.commit()
+
+        return redirect(url_for(".edit", idx=idx))
 
 
 @bp.route("/delete/<string:idx>")

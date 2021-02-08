@@ -22,28 +22,13 @@
                     <th>파일 이름</th>
                     <td>{{ ctx.filename }}</td>
                 </tr>
-                <tr>
-                    <th>업로드 날짜</th>
-                    <td>{{ ctx.upload }}</td>
-                </tr>
-                <tr>
-                    <th>MD5</th>
-                    <td>{{ ctx.md5 }}</td>
-                </tr>
-                <tr>
-                    <th>파일 크기</th>
-                    <td>{{ ctx.size|size }}</td>
-                </tr>
-                <tr>
-                    <th>파일 보관</th>
-                    <td>{{ ctx.delete }}일</td>
-                </tr>
-            </table>
+            </table><br>
 
-            <p>
-                <a class="btn" href="{{ url_for('github.delete', idx=ctx.idx ) }}">파일 삭제하기</a>
-                <a class="btn" href="{{ url_for('github.renew', idx=ctx.idx ) }}">파일 연장하기</a>
-                <a class="btn" href="{{ url_for('github.edit', idx=ctx.idx ) }}" target="_blank">파일명 수정하기</a>
-            </p>
+            <form method="post">
+                <input type="text" name="filename" placeholder="새로운 파일명" style="width:90%">
+                <p>
+                    <button class="btn" type="submit">수정하기</button>
+                </p>
+            </form>
         </section>
 {% endblock %}
