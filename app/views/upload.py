@@ -9,9 +9,9 @@ from flask import render_template
 from sqlalchemy.exc import IntegrityError
 
 from app import db
+from models import File
 from app.module.secure import secure_filename
 from config import UPLOAD_FOLDER, MAX_FILE_SIZE, MAX_UPLOAD_SIZE
-from models import File
 
 
 bp = Blueprint(
