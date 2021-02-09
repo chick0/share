@@ -9,8 +9,8 @@ from flask import abort, send_file
 from flask import redirect, url_for
 
 from app import db
-from config import UPLOAD_FOLDER
 from models import File, Report
+from config import UPLOAD_FOLDER
 from app.module.clean import file_remove
 
 
