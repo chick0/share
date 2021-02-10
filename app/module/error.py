@@ -6,12 +6,11 @@ from flask import render_template
 
 def render(error):
     g.title = "오류"
-    # g.description = ""
 
     return render_template(
         "error/error.html",
         message=g.description
-    ), getattr(error, "code")
+    ), getattr(error, "code")  # `werkzeug`의 오류 클래스에 있는 응답 코드를 가져옴 (werkzeug.exceptions 참고)
 
 # # # # # # # # # # # # # # # # # # # # # #
 

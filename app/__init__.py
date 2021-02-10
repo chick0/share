@@ -19,12 +19,13 @@ def create_app():          # Flask 앱
 
     @app.before_request
     def set_global():
-        g.host = conf['app']['host']
+        g.host = conf['app']['host']  # http 프로트콜을 포함한 도메인
 
-        g.title = "Share!"
-        g.description = "파일공유"
+        g.title = "Share!"            # 웹 사이트 타이틀
+        g.description = "파일공유"    # 웹 사이트 설명창
 
         try:
+            # Github 로그인용 설정
             g.client_id = conf['github']['client_id']
             g.client_secret = conf['github']['client_secret']
             g.use_github = True
@@ -42,9 +43,9 @@ def create_app():          # Flask 앱
     __import__("models")
 
     # 템플릿 필터 등록
-    app.add_template_filter(f=lambda x: f"{int(x) / 1024 / 1024:.2f}MB",
+    app.add_template_filter(f=lambda x: f"{int(x) / 1024 / 1024:.2f}MB",   # 소수점 포한
                             name="size")
-    app.add_template_filter(f=lambda x: f"{int(int(x) / 1024 / 1024)}MB",
+    app.add_template_filter(f=lambda x: f"{int(int(x) / 1024 / 1024)}MB",  # 소수점 제외
                             name="size_int")
 
     # ORM 등록 & 초기화
@@ -65,7 +66,7 @@ def create_app():          # Flask 앱
     app.register_error_handler(403, error.forbidden)
     app.register_error_handler(404, error.page_not_found)
     app.register_error_handler(405, error.method_not_allowed)
-    app.register_error_handler(413, error.request_entity_too_large)
+    app.register_error_handler(413, error.request_entity_too_large)  # 업로드 용량 초과
 
     app.register_error_handler(500, error.internal_server_error)
 
