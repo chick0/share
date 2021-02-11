@@ -9,7 +9,7 @@
             </form>
     {% if g.use_login is not none %}
         {% if g.username is not none %}
-            <a class="s" href="{{ url_for('github.dashboard') }}">{{g.username}} 으로 로그인됨</a>
+            <a class="s" href="{{ url_for(session.get('service') + '.dashboard') }}">{{g.username}} 으로 로그인됨</a>
         {% else %}
             <a class="s" href="{{ url_for('index.login') }}">로그인</a>
         {% endif %}
