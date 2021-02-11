@@ -9,7 +9,7 @@ from flask import render_template
 
 from app import db
 from models import File
-from app.module import api
+from app.module import github
 from app.module.clean import file_remove
 from app.module.secure import secure_filename
 
@@ -35,13 +35,13 @@ def callback():
 
     try:
         # 코드를 이용해서 `access_token` 가져오기
-        token = api.get_access_token(code=code)
+        token = github.get_access_token(code=code)
 
         # 가져온 토큰을 세션에 저장하기
         session['access_token'] = token['access_token']
 
         # 세션에 저장 되어있는 토큰으로 사용자 정보 가져오기
-        user_data = api.get_user_data(
+        user_data = github.get_user_data(
             access_token=session['access_token']
         )
 
