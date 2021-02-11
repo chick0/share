@@ -46,11 +46,12 @@ def login():
 
     g.description = "로그인"
 
-    return render_template(
-        "index/login.html",
-
+    if "github" in g.use_login:
         # Github OAuth 로그인 URL
-        GITHUB_LOGIN_URL=f"https://github.com/login/oauth/authorize"
-                         f"?client_id={g.client_id}"
-                         f"&scope=user:email"
+        g.GITHUB_LOGIN_URL = f"https://github.com/login/oauth/authorize"\
+                             f"?client_id={g.client_id}"\
+                             f"&scope=user:email"
+
+    return render_template(
+        "index/login.html"
     )
