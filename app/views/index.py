@@ -44,6 +44,10 @@ def login():
     if g.use_login is None:
         return redirect(url_for("index.index"))
 
+    if session.get("username") is not None:
+        # 로그인이 되어 있는 경우 메인 화면으로 이동하기
+        return redirect(url_for("index.index"))
+
     g.description = "로그인"
 
     if "github" in g.use_login:
