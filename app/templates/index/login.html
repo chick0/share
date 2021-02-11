@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <section class="message-box l">
+            <h2>로그인!</h2>
+        </section>
+
+        <section class="lf">
+            <a class="btn" href="{{ GITHUB_LOGIN_URL }}">Github 으로 로그인</a>
+        </section>
+
+        <section class="menu">
+            <a class="btn" href="{{ url_for('index.index') }}">메인 화면으로 돌아가기</a>
+        </section>
+{% endblock %}

@@ -30,8 +30,8 @@ def callback():
     # `access_token` 발급할 때 사용하는 코드를 불러옴
     code = request.args.get("code")
     if code is None:
-        # 코드가 없다면 메인 화면으로 보내기
-        return redirect(url_for("index.index"))
+        # 코드가 없다면 로그인 화면으로 보내기
+        return redirect(url_for("index.login"))
 
     try:
         # 코드를 이용해서 `access_token` 가져오기
@@ -55,7 +55,8 @@ def callback():
     except (HTTPError, KeyError):
         # - 올바르지 않은 코드로 로그인을 시도해 Github 에서 오류를 리턴함
         # - Github 에서 전달받은 JSON 에서 토큰을 가져오지 못함
-        return redirect(url_for("index.index"))
+        # --> 로그인 화면으로 보내기
+        return redirect(url_for("index.login"))
 
 
 @bp.route("/dashboard")
@@ -69,8 +70,8 @@ def dashboard():
         username = session['username']
         email = session['email']
     except KeyError:
-        # 세션에서 찾지 못했다면 메인 화면으로 이동
-        return redirect(url_for("index.index"))
+        # 세션에서 찾지 못했다면 로그인 화면으로 이동
+        return redirect(url_for("index.login"))
 
     # 로그인한 사용자의 이메일 주소와 일치하는 파일들을 가져옴
     ctx = File.query.filter_by(
@@ -95,8 +96,8 @@ def detail(idx: str):
         username = session['username']
         email = session['email']
     except KeyError:
-        # 세션에서 찾지 못했다면 메인 화면으로 이동
-        return redirect(url_for("index.index"))
+        # 세션에서 찾지 못했다면 로그인 화면으로 이동
+        return redirect(url_for("index.login"))
 
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
@@ -125,8 +126,8 @@ def edit(idx: str):
         username = session['username']
         email = session['email']
     except KeyError:
-        # 세션에서 찾지 못했다면 메인 화면으로 이동
-        return redirect(url_for("index.index"))
+        # 세션에서 찾지 못했다면 로그인 화면으로 이동
+        return redirect(url_for("index.login"))
 
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
@@ -168,8 +169,8 @@ def delete(idx: str):
         # 이메일을 세션에서 가져옴
         email = session['email']
     except KeyError:
-        # 세션에서 찾지 못했다면 메인 화면으로 이동
-        return redirect(url_for("index.index"))
+        # 세션에서 찾지 못했다면 로그인 화면으로 이동
+        return redirect(url_for("index.login"))
 
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 찾고 삭제 함
     # 해당되는 파일이 없는 경우 아무일도 일어나지 않음
@@ -201,8 +202,8 @@ def renew(idx: str):
         # 이메일을 세션에서 가져옴
         email = session['email']
     except KeyError:
-        # 세션에서 찾지 못했다면 메인 화면으로 이동
-        return redirect(url_for("index.index"))
+        # 세션에서 찾지 못했다면 로그인 화면으로 이동
+        return redirect(url_for("index.login"))
 
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
