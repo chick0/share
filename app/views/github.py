@@ -45,8 +45,10 @@ def callback():
             access_token=session['access_token']
         )
 
-        # 사용자 정보중 아이디와 이메일 그리고 닉네임을 세션에 저장함
-        session['login'] = user_data['login']
+        # 로그인 서비스 정보 저장
+        session['service'] = "github"
+
+        # 사용자 정보중 이메일과 닉네임을 세션에 저장함
         session['email'] = sha384(user_data['email'].encode()).hexdigest()
         session['username'] = user_data['name']
 
@@ -66,6 +68,14 @@ def dashboard():
         return redirect(url_for("index.index"))
 
     try:
+        if session['service'] != "github":
+            # 로그인한 서비스가 Github 이 아닌 경우 메인 페이지로 이동
+            return redirect(url_for("index.index"))
+    except KeyError:
+        # 세션에 로그인 서비스 정보가 없는 경우 로그인 페이지로 이동
+        return redirect(url_for("index.login"))
+
+    try:
         # 닉네임과 이메일을 세션에서 가져옴
         username = session['username']
         email = session['email']
@@ -75,6 +85,7 @@ def dashboard():
 
     # 로그인한 사용자의 이메일 주소와 일치하는 파일들을 가져옴
     ctx = File.query.filter_by(
+        service="github",
         email=email
     ).all()
 
@@ -92,6 +103,14 @@ def detail(idx: str):
         return redirect(url_for("index.index"))
 
     try:
+        if session['service'] != "github":
+            # 로그인한 서비스가 Github 이 아닌 경우 메인 페이지로 이동
+            return redirect(url_for("index.index"))
+    except KeyError:
+        # 세션에 로그인 서비스 정보가 없는 경우 로그인 페이지로 이동
+        return redirect(url_for("index.login"))
+
+    try:
         # 닉네임과 이메일을 세션에서 가져옴
         username = session['username']
         email = session['email']
@@ -102,6 +121,7 @@ def detail(idx: str):
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
         idx=idx,
+        service="github",
         email=email
     ).first()
 
@@ -122,6 +142,14 @@ def edit(idx: str):
         return redirect(url_for("index.index"))
 
     try:
+        if session['service'] != "github":
+            # 로그인한 서비스가 Github 이 아닌 경우 메인 페이지로 이동
+            return redirect(url_for("index.index"))
+    except KeyError:
+        # 세션에 로그인 서비스 정보가 없는 경우 로그인 페이지로 이동
+        return redirect(url_for("index.login"))
+
+    try:
         # 닉네임과 이메일을 세션에서 가져옴
         username = session['username']
         email = session['email']
@@ -132,6 +160,7 @@ def edit(idx: str):
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
         idx=idx,
+        service="github",
         email=email
     ).first()
 
@@ -166,6 +195,14 @@ def delete(idx: str):
         return redirect(url_for("index.index"))
 
     try:
+        if session['service'] != "github":
+            # 로그인한 서비스가 Github 이 아닌 경우 메인 페이지로 이동
+            return redirect(url_for("index.index"))
+    except KeyError:
+        # 세션에 로그인 서비스 정보가 없는 경우 로그인 페이지로 이동
+        return redirect(url_for("index.login"))
+
+    try:
         # 이메일을 세션에서 가져옴
         email = session['email']
     except KeyError:
@@ -176,6 +213,7 @@ def delete(idx: str):
     # 해당되는 파일이 없는 경우 아무일도 일어나지 않음
     File.query.filter_by(
         idx=idx,
+        service="github",
         email=email
     ).delete()
     db.session.commit()  # 변경사항 데이터베이스에 적용함
@@ -199,6 +237,14 @@ def renew(idx: str):
         return redirect(url_for("index.index"))
 
     try:
+        if session['service'] != "github":
+            # 로그인한 서비스가 Github 이 아닌 경우 메인 페이지로 이동
+            return redirect(url_for("index.index"))
+    except KeyError:
+        # 세션에 로그인 서비스 정보가 없는 경우 로그인 페이지로 이동
+        return redirect(url_for("index.login"))
+
+    try:
         # 이메일을 세션에서 가져옴
         email = session['email']
     except KeyError:
@@ -208,6 +254,7 @@ def renew(idx: str):
     # 파일 아이디와 로그인한 사용자의 이메일 주소와 일치하는 파일을 가져옴
     ctx = File.query.filter_by(
         idx=idx,
+        service="github",
         email=email
     ).first()
 

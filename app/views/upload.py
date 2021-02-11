@@ -45,9 +45,14 @@ def upload_file():
             try:
                 # 세션에서 이메일을 가져온다
                 email = session['email']
+
+                # 세션에서 로그인한 서비스 이름을 가져온다
+                service = session['service']
+
                 ctx.email = email
+                ctx.service = service
             except KeyError:
-                # 로그인 상태가 아니라서 이메일 정보가 없으면 넘긴다
+                # 로그인 상태가 아니라서 정보가 없으면 넘긴다
                 pass
 
         db.session.add(ctx)  # 데이터베이스에 추가하고
