@@ -24,7 +24,7 @@ bp = Blueprint(
 @bp.route("/callback")
 def callback():
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     # `access_token` 발급할 때 사용하는 코드를 불러옴
@@ -64,7 +64,7 @@ def callback():
 @bp.route("/dashboard")
 def dashboard():
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     try:
@@ -99,7 +99,7 @@ def dashboard():
 @bp.route("/detail/<string:idx>")
 def detail(idx: str):
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     try:
@@ -138,7 +138,7 @@ def detail(idx: str):
 @bp.route("/edit/<string:idx>", methods=['GET', 'POST'])
 def edit(idx: str):
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     try:
@@ -191,7 +191,7 @@ def edit(idx: str):
 @bp.route("/delete/<string:idx>")
 def delete(idx: str):
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     try:
@@ -233,7 +233,7 @@ def delete(idx: str):
 @bp.route("/renew/<string:idx>")
 def renew(idx: str):
     # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    if "github" not in g.use_login:
         return redirect(url_for("index.index"))
 
     try:

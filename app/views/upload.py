@@ -41,19 +41,18 @@ def upload_file():
             size=g.size
         )
 
-        if g.use_github:  # 만약 Github OAuth 설정이 되어있는 경우
-            try:
-                # 세션에서 이메일을 가져온다
-                email = session['email']
+        try:
+            # 세션에서 이메일을 가져온다
+            email = session['email']
 
-                # 세션에서 로그인한 서비스 이름을 가져온다
-                service = session['service']
+            # 세션에서 로그인한 서비스 이름을 가져온다
+            service = session['service']
 
-                ctx.email = email
-                ctx.service = service
-            except KeyError:
-                # 로그인 상태가 아니라서 정보가 없으면 넘긴다
-                pass
+            ctx.email = email
+            ctx.service = service
+        except KeyError:
+            # 로그인 상태가 아니라서 정보가 없으면 넘긴다
+            pass
 
         db.session.add(ctx)  # 데이터베이스에 추가하고
         db.session.commit()  # 변경사항 데이터베이스에 적용함

@@ -7,7 +7,7 @@
                 </p>
                 <button class="btn" type="submit" style="width:30%;">업로드</button>
             </form>
-    {% if g.use_github %}
+    {% if g.use_login is not none %}
         {% if g.username is not none %}
             <a class="s" href="{{ url_for('github.dashboard') }}">{{g.username}} 으로 로그인됨</a>
         {% else %}

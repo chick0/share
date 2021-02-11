@@ -25,11 +25,10 @@ def ok():
 def index():
     g.description = "쉽고 빠르게 파일을 공유해보세요"
 
-    if g.use_github:
-        try:
-            g.username = session['username']  # 세션에서 유저 이름 불러옴
-        except KeyError:
-            g.username = None                 # 세션에서 불러오기 실패 할 경우 비로그인 유저로 판단
+    try:
+        g.username = session['username']  # 세션에서 유저 이름 불러옴
+    except KeyError:
+        g.username = None                 # 세션에서 불러오기 실패 할 경우 비로그인 유저로 판단
 
     return render_template(
         "index/index.html",
@@ -41,8 +40,8 @@ def index():
 
 @bp.route("/login")
 def login():
-    # Github OAuth 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if not g.use_github:
+    # 로그인 설정이 안된경우 해당 요청을 아예 무시함
+    if g.use_login is None:
         return redirect(url_for("index.index"))
 
     g.description = "로그인"

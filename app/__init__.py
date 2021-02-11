@@ -24,13 +24,16 @@ def create_app():          # Flask 앱
         g.title = "Share!"            # 웹 사이트 타이틀
         g.description = "파일공유"    # 웹 사이트 설명창
 
+        g.use_login = []              # 로그인 가능한 서비스가 저장된 리스트
+
         try:
-            # Github 로그인용 설정
+            # Github OAuth 로그인 설정
             g.client_id = conf['github']['client_id']
             g.client_secret = conf['github']['client_secret']
-            g.use_github = True
+
+            g.use_login.append("github")
         except KeyError:
-            g.use_github = False
+            pass
 
     @app.after_request
     def set_header(response):
