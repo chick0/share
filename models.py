@@ -34,6 +34,10 @@ class File(db.Model):
         nullable=False
     )
 
+    service = db.Column(     # 로그인 서비스 이름
+        db.String(10)
+    )
+
     email = db.Column(       # 파일 업로더의 이메일, sha384 적용됨 (로그인시 저장됨)
         db.String(96)
     )
