@@ -31,8 +31,7 @@ MAX_CONTENT_LENGTH = MAX_FILE_SIZE + (8 * KB)
 
 # DB 접속 정보 & 설정
 try:
-    SQLALCHEMY_DATABASE_URI = f"mysql://{conf['account']['user']}:{conf['account']['password']}" \
-                              f"@{conf['database']['host']}/{conf['database']['database']}"
+    SQLALCHEMY_DATABASE_URI = conf['db']['url']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 except KeyError:
     print("데이터베이스 접속 정보를 불러오지 못함")
