@@ -4,15 +4,12 @@ from os import path
 from hashlib import sha384
 from urllib.request import Request, urlopen
 
-# # # # # # # # # # # # # # # # # # # # # #
+from conf import conf
 
-# 포트 설정
-PORT = 5000
-
-# # # # # # # # # # # # # # # # # # # # # #
 
 if __name__ == "__main__":
-    req = Request(method="GET", url=f"http://localhost:{PORT}/clean")  # 보관 기간이 지난 파일들을 정리하는 뷰 포인트
+    req = Request(method="GET",
+                  url=f"http://localhost:{conf['server']['port']}/clean")
     req.add_header("User-Agent", "CleanUP")
 
     with open(path.join(path.dirname(__file__), ".SECRET_KEY"), mode="rb") as fp:
