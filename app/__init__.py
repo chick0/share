@@ -21,8 +21,8 @@ def create_app():          # Flask 앱
     def set_global():
         g.host = conf['app']['host']  # http 프로트콜을 포함한 도메인
 
-        g.title = "Share!"            # 웹 사이트 타이틀
-        g.description = "파일공유"    # 웹 사이트 설명창
+        g.title = conf['app']['title']              # 웹 사이트 타이틀
+        g.description = conf['app']['description']  # 웹 사이트 설명창
 
         g.use_login = []              # 로그인 가능한 서비스가 저장된 리스트
 
