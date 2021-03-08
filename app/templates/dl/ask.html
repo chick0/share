@@ -1,25 +1,41 @@
 {% extends 'layout.html' %}
 {% block content %}
-        <section class="lf">
-            <span>{{ ctx.upload }}</span><br>
-            <span>{{ ctx.size|size }}</span>
-        </section>
+    <div class="row">
+        <h3 class="display-5">파일 다운로드</h3>
+        <p class="lead">{{ ctx.filename }}</p>
+    </div>
 
-        <section class="message-box l">
-            <h2>파일 다운로드</h2>
-            <p>파일명 : <span class="high">{{ ctx.filename }}</span></p>
-            <a class="btn" href="{{ url_for('dl.download', idx=ctx.idx, filename=ctx.filename) }}" target="_blank" style="width:30%;">파일 다운로드</a>
-        </section>
+    <div class="row py-5">
+        <p>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('dl.download', idx=ctx.idx, filename=ctx.filename) }}" target="_blank">다운로드</a>
+            <a class="btn btn-danger btn-lg" href="{{ url_for('md5.report', md5=ctx.md5) }}" target="_blank">신고하기</a>
+        </p>
+    </div>
 
-        <section class="menu">
-            <a class="copy" data-clipboard-text="{{ ctx.md5 }}">MD5 복사하기</a>
-            <span>|</span>
-            <a href="{{ url_for('md5.report', md5=ctx.md5) }}">파일 신고하기</a>
-        </section>
+    <div class="row py-5">
+        <table class="table">
+            <tr>
+                <th scope="row">파일 아이디</th>
+                <td class="copy" data-clipboard-target="#idx" id="idx">{{ ctx.idx }}</td>
+            </tr>
+            <tr>
+                <th scope="row">업로드 시간</th>
+                <td class="copy" data-clipboard-target="#upload" id="upload">{{ ctx.upload }}</td>
+            </tr>
+            <tr>
+                <th scope="row">크기</th>
+                <td class="copy" data-clipboard-target="#size" id="size">{{ ctx.size }} ({{ ctx.size|size }})</td>
+            </tr>
+            <tr>
+                <th scope="row">MD5</th>
+                <td class="copy" data-clipboard-target="#md5" id="md5">{{ ctx.md5 }}</td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
 {% block script %}
-        <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
-        <script>
-            new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!"),window.getSelection().removeAllRanges();});
-        </script>
+    <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+    <script>
+        new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!"),window.getSelection().removeAllRanges();});
+    </script>
 {% endblock %}

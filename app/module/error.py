@@ -5,8 +5,6 @@ from flask import render_template
 
 
 def render(error):
-    g.title = "오류"
-
     return render_template(
         "error/error.html",
         message=g.description

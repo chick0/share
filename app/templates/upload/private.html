@@ -1,28 +1,46 @@
 {% extends 'layout.html' %}
 {% block content %}
-        <section class="message-box l">
-            <h2>업로드 성공</h2>
-            <p>파일명 : <span class="high">{{ filename }}</span></p>
+    <div class="row">
+        <h3 class="display-3">업로드 성공!</h3>
+        <p class="lead">{{ ctx.filename }}</p>
+    </div>
 
-            <p>
-                <a class="btn" href="{{ url_for('dl.ask', idx=idx) }}">다운로드</a>
-                <button class="btn copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=idx) }}">링크복사</button>
-            </p>
-        {% if session.get("service") == "github" %}
-            <p>
-                <a class="btn" href="{{ url_for('github.delete', idx=idx ) }}?go=index">삭제하기</a>
-                <a class="btn" href="{{ url_for('github.edit', idx=idx ) }}" target="_blank">수정하기</a>
-            </p>
-        {% endif %}
-        </section>
+    <div class="row py-5">
+        <p>
+            <a class="btn btn-success btn-lg" href="{{ url_for('dl.ask', idx=ctx.idx) }}">다운로드</a>
+            <button class="btn btn-primary btn-lg copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=ctx.idx) }}">링크복사</button>
+            <a class="btn btn-danger btn-lg" href="#개발중">파일 삭제</a>
+        </p>
+    </div>
 
-        <section class="menu">
-            <a class="btn" href="{{ url_for('index.index') }}">메인 화면으로 돌아가기</a>
-        </section>
+    <div class="row py-5">
+        <table class="table">
+            <tr>
+                <th scope="row">파일 아이디</th>
+                <td class="copy" data-clipboard-target="#idx" id="idx">{{ ctx.idx }}</td>
+            </tr>
+            <tr>
+                <th scope="row">업로드 시간</th>
+                <td class="copy" data-clipboard-target="#upload" id="upload">{{ ctx.upload }}</td>
+            </tr>
+            <tr>
+                <th scope="row">파일 보관 기간</th>
+                <td class="copy" data-clipboard-target="#delete" id="delete">{{ ctx.delete }}일</td>
+            </tr>
+            <tr>
+                <th scope="row">크기</th>
+                <td class="copy" data-clipboard-target="#size" id="size">{{ ctx.size }} ({{ ctx.size|size }})</td>
+            </tr>
+            <tr>
+                <th scope="row">MD5</th>
+                <td class="copy" data-clipboard-target="#md5" id="md5">{{ ctx.md5 }}</td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
 {% block script %}
-        <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
-        <script>
-            new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!")});
-        </script>
+    <script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
+    <script>
+        new ClipboardJS(".copy").on("success",function(){window.alert("복사되었습니다!")});
+    </script>
 {% endblock %}

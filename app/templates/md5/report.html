@@ -1,16 +1,21 @@
 {% extends 'layout.html' %}
 {% block content %}
-        <section class="message-box l">
-            <h2>파일 신고</h2>
-        </section>
+    <div class="row">
+        <h3 class="display-3">파일 신고</h3>
+        <div class="alert alert-danger">
+            <b>주의</b> — 파일 신고는 삭제 및 수정이 불가능합니다.
+        </div>
+    </div>
 
-        <section class="lf">
-            <form method="post">
-                <p>
-                    <button class="btn" type="submit">신고 하기</button>
-                    <a class="btn" href="{{ url_for('md5.index') }}">검색 화면으로 돌아가기</a>
-                </p>
-                <textarea id="text" name="text" style="width:100%;" rows="6"></textarea>
-            </form>
-        </section>
+    <div class="row py-5">
+        <form method="post">
+            <p>
+                <button class="btn btn-primary btn-lg" type="submit">신고 하기</button>
+            </p>
+            <div class="form-floating">
+                <textarea id="text" name="text" class="form-control" style="height:200px;" required="required"></textarea>
+                <label for="text">신고 사유 (모든 사람이 확인 가능함)</label>
+            </div>
+        </form>
+    </div>
 {% endblock %}

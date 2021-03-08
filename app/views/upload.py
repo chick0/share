@@ -110,9 +110,9 @@ def upload():
 
 @bp.route("/private/<string:idx>")
 def private(idx: str):
-    # 파일 아이디가 4자가 아니면,
+    # `업로드 성공` 페이지용 아이디가 4자가 아니면,
     # - 403 오류 리턴
-    if len(session[idx]) != 4:
+    if not len(idx) == 4:
         abort(403)
 
     try:
@@ -129,8 +129,7 @@ def private(idx: str):
 
         return render_template(
             "upload/private.html",
-            idx=ctx.idx,
-            filename=ctx.filename
+            ctx=ctx
         )
     except KeyError:
         # `업로드 성공` 페이지용 아이디로 파일 아이디를 찾을수 없다면,

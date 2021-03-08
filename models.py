@@ -72,9 +72,5 @@ class Report(db.Model):
         default=False
     )
 
-    def __init__(self, md5: str, text: str):
-        self.md5 = md5
-        self.text = text
-
     def __repr__(self):
         return f"<Report md5={self.md5!r}>"
