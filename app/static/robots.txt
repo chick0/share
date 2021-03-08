@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /$
-Allow: /static
-Disallow: /
-Disallow: /dl
-Disallow: /md5
-Disallow: /github
-Disallow: /upload

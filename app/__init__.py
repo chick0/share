@@ -18,6 +18,32 @@ def create_app():          # Flask 앱
     app = Flask(__name__)  # 앱 만들기
     app.config.from_object(obj=__import__("config"))
 
+    @app.route("/ok")
+    def ok():
+        return "200 OK", 200
+
+    @app.route("/favicon.ico")
+    def favicon():
+        return send_file(
+            "static/img/favicon.ico",
+            mimetype="image/x-icon"
+        )
+
+    @app.route("/robots.txt")
+    def robots():
+        return Response(
+            mimetype="text/plain",
+            response="\n".join([
+                "User-agent: *",
+                "Allow: /$",
+                "Allow: /static",
+                "Disallow: /",
+                "Disallow: /dl",
+                "Disallow: /md5",
+                "Disallow: /upload"
+            ])
+        ), 200
+
     @app.before_request
     def set_global():
         g.host = conf['app']['host']  # http 프로트콜을 포함한 도메인
