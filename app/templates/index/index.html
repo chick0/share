@@ -1,22 +1,31 @@
 {% extends 'layout.html' %}
 {% block content %}
-        <section class="message-box l">
-            <form method="post" action="{{ url_for('upload.upload') }}" enctype="multipart/form-data">
-                <p>
-                    <input type="file" name="upload">
-                </p>
-                <button class="btn" type="submit" style="width:30%;">업로드</button>
-            </form>
-    {% if g.use_login is not none %}
-        {% if g.username is not none %}
-            <a class="s" href="{{ url_for(session.get('service') + '.dashboard') }}">{{g.username}} 으로 로그인됨</a>
-        {% else %}
-            <a class="s" href="{{ url_for('index.login') }}">로그인</a>
-        {% endif %}
-    {% endif %}
-        </section>
-
-        <section class="menu">
-            용량 제한 {{ MAX_FILE_SIZE|size_int }} | 1일후 파일 삭제 | <a href="{{ url_for('md5.index') }}">검색하기</a>
-        </section>
+    <div class="row">
+        <h3 class="display-3">업로드!</h3>
+        <form method="post" action="{{ url_for('upload.upload') }}" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="timeout">파일 보관 기간</label>
+                <select class="form-select" id="timeout" name="timeout">
+                    <option value="1" selected>1일</option>
+                    <option value="2">2일</option>
+                    <option value="3">3일</option>
+                    <option value="4">4일</option>
+                    <option value="5">5일</option>
+                    <option value="6">6일</option>
+                    <option value="7">7일</option>
+                    <option value="8">8일</option>
+                    <option value="9">9일</option>
+                    <option value="10">10일</option>
+                    <option value="11">11일</option>
+                    <option value="12">12일</option>
+                    <option value="13">13일</option>
+                    <option value="14">14일</option>
+                </select>
+            </div>
+            <p>
+                <input type="file" name="upload" class="form-control" required="required">
+            </p>
+            <button class="btn btn-primary btn-lg" type="submit">파일 업로드</button>
+        </form>
+    </div>
 {% endblock %}
