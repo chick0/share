@@ -129,6 +129,34 @@ def private(idx: str):
 
         return render_template(
             "upload/private.html",
+            ctx=ctx,  # 파일 정보
+            idx=idx   # `업로드 성공` 페이지용 아이디
+        )
+    except KeyError:
+        # `업로드 성공` 페이지용 아이디로 파일 아이디를 찾을수 없다면,
+        # - 403 오류 리턴
+        abort(403)
+
+
+@bp.route("/delete/<string:idx>")
+def delete(idx: str):
+    # `업로드 성공` 페이지용 아이디가 4자가 아니면,
+    # - 403 오류 리턴
+    if not len(idx) == 4:
+        abort(403)
+
+    try:
+        # `업로드 성공` 페이지용 아이디로 파일 아이디 불러오고
+        # 그 파일 아이디로 파일 정보를 불러오고
+        # 그 파일 정보를 삭제함
+        ctx = File.query.filter_by(
+            idx=session[idx]
+        ).first()
+        db.session.delete(ctx)
+        db.session.commit()
+
+        return render_template(
+            "upload/delete.html",
             ctx=ctx
         )
     except KeyError:

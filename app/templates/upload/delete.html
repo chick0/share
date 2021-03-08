@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="row">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">파일 삭제됨</h4>
+            <p class="mb-0"><a class="btn btn-primary" href="{{ url_for('index.index') }}">메인 화면으로 돌아가기</a></p>
+        </div>
+    </div>
+
+    <div class="row py-5">
+        <table class="table">
+            <tr>
+                <th scope="row">파일 아이디</th>
+                <td>{{ ctx.idx }}</td>
+            </tr>
+            <tr>
+                <th scope="row">업로드 시간</th>
+                <td>{{ ctx.upload }}</td>
+            </tr>
+            <tr>
+                <th scope="row">파일 보관 기간</th>
+                <td>{{ ctx.delete }}일</td>
+            </tr>
+            <tr>
+                <th scope="row">크기</th>
+                <td>{{ ctx.size }} ({{ ctx.size|size }})</td>
+            </tr>
+            <tr>
+                <th scope="row">MD5</th>
+                <td>{{ ctx.md5 }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
