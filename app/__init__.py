@@ -2,6 +2,7 @@
 from os import path, mkdir
 
 from flask import Flask, g
+from flask import Response, send_file
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,17 +24,6 @@ def create_app():          # Flask 앱
 
         g.title = conf['app']['title']              # 웹 사이트 타이틀
         g.description = conf['app']['description']  # 웹 사이트 설명창
-
-        g.use_login = []              # 로그인 가능한 서비스가 저장된 리스트
-
-        try:
-            # Github OAuth 로그인 설정
-            g.client_id = conf['github']['client_id']
-            g.client_secret = conf['github']['client_secret']
-
-            g.use_login.append("github")
-        except KeyError:
-            pass
 
     @app.after_request
     def set_header(response):
