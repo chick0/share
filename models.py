@@ -14,45 +14,34 @@ class File(db.Model):
     )
 
     filename = db.Column(    # 파일 이름
-        db.String(255),
-        nullable=False
+        db.String(256),
+        nullable=False,
+        default="undefined"
     )
 
     upload = db.Column(      # 파일 업로드 시간
         db.DateTime,
-        default=func.now(),
-        nullable=False
+        nullable=False,
+        default=func.now()
     )
 
     md5 = db.Column(         # 파일 MD5 해시
         db.String(32),
-        nullable=False
+        nullable=False,
+        default="undefined"
     )
 
     size = db.Column(        # 파일 크기
         db.Integer,
-        nullable=False
+        nullable=False,
+        default=0
     )
 
-    service = db.Column(     # 로그인 서비스 이름
-        db.String(10)
-    )
-
-    email = db.Column(       # 파일 업로더의 이메일, sha384 적용됨 (로그인시 저장됨)
-        db.String(96)
-    )
-
-    delete = db.Column(      # 파일 보관 날짜 (기본값: 1일, 로그인시 최대 14일
+    delete = db.Column(      # 파일 보관 날짜 (기본 값: 1일, 최대 값 14일)
         db.Integer,
-        default=1,
-        nullable=False
+        nullable=False,
+        default=0
     )
-
-    def __init__(self, idx: str, filename: str, md5: str, size: int):
-        self.idx = idx
-        self.filename = filename
-        self.md5 = md5
-        self.size = size
 
     def __repr__(self):
         return f"<File idx={self.idx!r}>"
