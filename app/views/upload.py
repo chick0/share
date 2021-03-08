@@ -3,7 +3,7 @@ from re import compile
 from os import path, urandom
 from hashlib import md5
 
-from flask import Blueprint, g
+from flask import Blueprint
 from flask import abort, request, session
 from flask import redirect, url_for
 from flask import render_template
@@ -36,34 +36,16 @@ def get_all_size(size: int = 0):
 
 
 def upload_file():
-    g.idx = urandom(4).hex()  # 파일 아이디를 생성함 (8자)
-
     try:
-        ctx = File(
-            idx=g.idx,
-            md5=g.md5,
-            filename=g.filename,
-            size=g.size
-        )
+        ctx = File()
+        ctx.idx = urandom(4).hex()  # 파일 아이디를 생성함 (8자)
 
-        try:
-            # 세션에서 이메일을 가져온다
-            email = session['email']
+        db.session.add(ctx)
+        db.session.commit()
 
-            # 세션에서 로그인한 서비스 이름을 가져온다
-            service = session['service']
-
-            ctx.email = email
-            ctx.service = service
-        except KeyError:
-            # 로그인 상태가 아니라서 정보가 없으면 넘긴다
-            pass
-
-        db.session.add(ctx)  # 데이터베이스에 추가하고
-        db.session.commit()  # 변경사항 데이터베이스에 적용함
-
+        return ctx
     except IntegrityError:   # 데이터베이스 적용 실패: 이미 사용중인 파일 아이디
-        upload_file()
+        return upload_file()
 
 
 @bp.route("/", methods=['POST'])
@@ -74,46 +56,64 @@ def upload():
     if get_all_size() > MAX_UPLOAD_SIZE:
         return render_template(
             "upload/cancel.html",
-            why="지금은 업로드 할 수 없습니다"
+            why="업로드 서버의 용량이 꽉 찼습니다"
         )
 
     file = request.files['upload']
 
-    g.filename = secure_filename(file.filename)  # 파일 이름 검사
-    g.stream = file.read()                       # 파일
-    g.size = len(g.stream)                       # 파일의 크기 확인
+    filename = secure_filename(file.filename)
+    stream = file.read()
+    size = len(stream)
 
-    if len(g.filename) > 255:
+    if not len(filename) <= 256:
         return render_template(
             "upload/cancel.html",
-            why="파일명이 너무 길어요 (255자 이하)"
+            why="파일명이 너무 길어요 (256자 이하)"
         )
-    if g.size == 0:
+    if size == 0:
         return render_template(
             "upload/cancel.html",
             why="파일이 없음"
         )
-    if g.size > MAX_FILE_SIZE:
+    if not size <= MAX_FILE_SIZE:
         return render_template(
             "upload/cancel.html",
-            why="파일의 용량이 너무 큼"
+            why="파일의 용량이 너무 큽니다"
         )
 
-    g.md5 = md5(g.stream).hexdigest()            # 파일의 MD5 해시 구하기
-    upload_file()                                # 데이터베이스에 파일 정보 추가하기
+    ctx = upload_file()
+    ctx.filename = filename            # 파일명 저장
+    ctx.md5 = md5(stream).hexdigest()  # MD5 해시 저장
+    ctx.size = size                    # 파일 크키 저장
 
-    with open(path.join(UPLOAD_FOLDER, g.idx), mode="wb") as fp:
-        fp.write(g.stream)                       # 파일 저장
+    try:
+        # 파일 보관 날짜 가져오기
+        timeout = int(request.form.get("timeout", 1))
+
+        if 1 <= timeout <= 14:   # 1일 이상 14일 이하이면 저장
+            ctx.delete = timeout
+        else:                    # 아니면 1일로 저장
+            ctx.delete = 1
+    except ValueError:           # 숫자가 아니면 1일로 저장
+        ctx.delete = 1
+
+    db.session.commit()
+
+    with open(path.join(UPLOAD_FOLDER, ctx.idx), mode="wb") as fp:
+        fp.write(stream)    # 파일 저장
 
     idx = urandom(2).hex()  # `업로드 성공` 페이지용 아이디 생성 (4자)
-    session[idx] = g.idx    # 세션에 파일 아이디도 저장
+    session[idx] = ctx.idx  # 세션에 파일 아이디도 저장
 
     return redirect(url_for(".private", idx=idx))
 
 
 @bp.route("/private/<string:idx>")
 def private(idx: str):
-    g.description = "해당 페이지는 업로더만 확인이 가능합니다"
+    # 파일 아이디가 4자가 아니면,
+    # - 403 오류 리턴
+    if len(session[idx]) != 4:
+        abort(403)
 
     try:
         # `업로드 성공` 페이지용 아이디로 파일 아이디 불러오고
@@ -122,7 +122,8 @@ def private(idx: str):
             idx=session[idx]
         ).first()
 
-        # 만약 불러온 파일 정보가 없다면, 403 오류 리턴
+        # 만약 불러온 파일 정보가 없다면,
+        # - 404 오류 리턴
         if ctx is None:
             abort(404)
 
@@ -132,5 +133,6 @@ def private(idx: str):
             filename=ctx.filename
         )
     except KeyError:
-        # `업로드 성공` 페이지용 아이디로 파일 아이디를 찾을수 없다면, 403 오류 리턴
+        # `업로드 성공` 페이지용 아이디로 파일 아이디를 찾을수 없다면,
+        # - 403 오류 리턴
         abort(403)
