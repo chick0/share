@@ -36,26 +36,3 @@ def index():
         # 파일 업로드 용량
         MAX_FILE_SIZE=MAX_FILE_SIZE
     )
-
-
-@bp.route("/login")
-def login():
-    # 로그인 설정이 안된경우 해당 요청을 아예 무시함
-    if g.use_login is None:
-        return redirect(url_for("index.index"))
-
-    if session.get("username") is not None:
-        # 로그인이 되어 있는 경우 메인 화면으로 이동하기
-        return redirect(url_for("index.index"))
-
-    g.description = "로그인"
-
-    if "github" in g.use_login:
-        # Github OAuth 로그인 URL
-        g.GITHUB_LOGIN_URL = f"https://github.com/login/oauth/authorize"\
-                             f"?client_id={g.client_id}"\
-                             f"&scope=user:email"
-
-    return render_template(
-        "index/login.html"
-    )
