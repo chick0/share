@@ -16,10 +16,10 @@
         <meta property="og:image" content="{{ url_for('static', filename='img/icon192.png') }}">
 
         <link rel="canonical" href="{{ g.host }}{{ request.path }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
-        <meta name="theme-color" content="#DBDBDB">
-        <link rel="shortcut icon" href="/favicon.ico">
+        <meta name="theme-color" content="#FFFFFF">
+        <link rel="shortcut icon" href="{{ url_for('favicon') }}">
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon192.png') }}" sizes="192x192">
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon256.png') }}" sizes="256x256">
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icon512.png') }}" sizes="512x512">
@@ -27,8 +27,33 @@
         <link rel="apple-touch-icon" sizes="256x256" href="{{ url_for('static', filename='img/icon256.png') }}">
         <link rel="apple-touch-icon" sizes="512x512" href="{{ url_for('static', filename='img/icon512.png') }}">
     </head>
-    <body>
-        {% block content %}{% endblock %}
+    <body class="bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">{{ g.title }}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index.index') }}">Upload</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('md5.index') }}">Search</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="bg-white py-5">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
         {% block script %}{% endblock %}
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </body>
 </html>
