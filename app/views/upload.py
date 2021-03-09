@@ -152,6 +152,11 @@ def delete(idx: str):
         ctx = File.query.filter_by(
             idx=session[idx]
         ).first()
+
+        # 검색됨 파일이 없다면 404 오류 리턴
+        if ctx is None:
+            abort(404)
+
         db.session.delete(ctx)
         db.session.commit()
 
