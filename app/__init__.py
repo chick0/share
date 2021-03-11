@@ -10,6 +10,7 @@ from app.module import error
 from config import UPLOAD_FOLDER
 from conf import conf
 
+
 db = SQLAlchemy()
 migrate = Migrate()
 
