@@ -30,9 +30,18 @@
     </div>
 
     <div class="row py-5">
-        <ul class="lead">
+        <h6 class="display-6">정보</h6>
+        <ul class="lead" style="list-style:none">
             <li>파일은 최대 {{ MAX_FILE_SIZE|size_int }}까지 업로드가 가능합니다.</li>
             <li>파일 업로더의 IP 주소는 기록되지 않으나 서버 로그에 남을 수 있습니다.</li>
         </ul>
+    </div>
+
+    <div class="row py-5">
+        <h6 class="display-6">경고</h6>
+        <ul class="lead" style="list-style:none">
+            <li>저작권법을 위반하는 파일을 업로드 하지 마세요</li>
+        </ul>
+        <b>위반 시 파일의 다운로드가 차단될 수 있습니다.</b>
     </div>
 {% endblock %}
