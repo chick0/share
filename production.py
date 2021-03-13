@@ -32,5 +32,6 @@ if __name__ == "__main__":
             application=app,
             setup_console_handler=True
         ),
-        port=conf['server']['port']
+        port=conf['server']['port'],
+        url_scheme="https"
     )
