@@ -21,29 +21,35 @@ bp = Blueprint(
 )
 
 
-def get_file_by_idx(idx: str):
+@bp.route("/<string:idx>")
+def ask(idx: str):
     # 파일 아이디로 파일 검색
-    return File.query.filter_by(
+    ctx = File.query.filter_by(
         idx=idx
     ).first()
 
-
-def get_report_by_hash(md5: str):
-    # MD5로 파일이 신고 되었는지 검색
-    return Report.query.filter_by(
-        md5=md5
-    ).first()
-
-
-@bp.route("/<string:idx>")
-def ask(idx: str):
-    ctx = get_file_by_idx(idx=idx)
     if ctx is None:  # 해당 아이디의 파일이 없다면
         abort(404)   # 404 오류 리턴
 
+    # 파일 비밀번호 검사
+    if ctx.password is not None:
+        session_key = f"password_{idx}"
+
+        # 비밀번호 인증을 하지 않았다면, 인증 필요로 상태 변경
+        if session.get(session_key, None) is None:
+            session[session_key] = False
+
+        # 파일 비밀번호 인증을 통과 했으면 지나가기
+        if not session[session_key]:
+            return redirect(url_for("password.ask", idx=idx))
+
     # 해당 파일의 MD5로 파일이 신고되었는지 검색
-    report = get_report_by_hash(md5=ctx.md5)
-    if report is not None:  # 신고 정보가 있는 경우
+    report = Report.query.filter_by(
+        md5=ctx.md5
+    ).first()
+
+    # 신고 정보가 있는 경우
+    if report is not None:
         def warn():
             g.description = "경고! 해당 파일은 신고된 파일입니다"
             return render_template(
@@ -86,9 +92,13 @@ def warn_off(idx: str, md5: str):
 
 @bp.route("/<string:idx>/<string:filename>")
 def download(idx: str, filename: str):
-    ctx = get_file_by_idx(idx=idx)  # 파일 아이디로 파일 정보 가져오기
-    if ctx is None:                 # 해당 되는 파일이 없다면
-        abort(404)                  # 404 오류 리턴
+    # 파일 아이디로 파일 검색
+    ctx = File.query.filter_by(
+        idx=idx
+    ).first()
+
+    if ctx is None:  # 해당 되는 파일이 없다면
+        abort(404)   # 404 오류 리턴
 
     # 파일 만료일 계산
     delete_time = ctx.upload + timedelta(days=ctx.delete)
@@ -110,7 +120,10 @@ def download(idx: str, filename: str):
         )
 
     # 해당 파일의 MD5로 파일이 신고되었는지 검색
-    report = get_report_by_hash(md5=ctx.md5)
+    report = Report.query.filter_by(
+        md5=ctx.md5
+    ).first()
+
     if report is not None:
         if report.ban is True:  # 해당 파일이 차단 되었다면
             g.description = "해당 파일은 다운로드가 불가능한 차단된 파일입니다"
@@ -118,6 +131,18 @@ def download(idx: str, filename: str):
                 "error/error.html",
                 message="이 파일은 차단된 파일입니다"
             ), 400
+
+    # 파일 비밀번호 검사
+    if ctx.password is not None:
+        session_key = f"password_{idx}"
+
+        # 비밀번호 인증을 하지 않았다면, 인증 필요로 상태 변경
+        if session.get(session_key, None) is None:
+            session[session_key] = False
+
+        # 파일 비밀번호 인증을 통과 했으면 지나가기
+        if not session[session_key]:
+            return redirect(url_for("password.ask", idx=idx))
 
     # 파일이 업로드 풀더에 있다면
     if path.exists(path.join(UPLOAD_FOLDER, idx)):

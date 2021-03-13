@@ -10,6 +10,7 @@
             <a class="btn btn-success btn-lg" href="{{ url_for('dl.ask', idx=ctx.idx) }}">다운로드</a>
             <button class="btn btn-primary btn-lg copy" data-clipboard-text="{{ g.host }}{{ url_for('dl.ask', idx=ctx.idx) }}">링크복사</button>
             <a class="btn btn-danger btn-lg" href="{{ url_for('upload.delete', idx=idx) }}">파일 삭제</a>
+            <a class="btn btn-secondary btn-lg" href="{{ url_for('password.private', idx=idx) }}">비밀번호</a>
         </p>
     </div>
 
