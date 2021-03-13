@@ -43,6 +43,11 @@ class File(db.Model):
         default=0
     )
 
+    password = db.Column(    # 파일 다운로드 비밀번호
+        db.String(96),
+        nullable=True
+    )
+
     def __repr__(self):
         return f"<File idx={self.idx!r}>"
 
