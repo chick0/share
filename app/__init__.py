@@ -83,6 +83,7 @@ def create_app():          # Flask 앱
 
     # 오류 핸들러
     app.register_error_handler(400, error.bad_request)
+    app.register_error_handler(401, error.unauthorized)
     app.register_error_handler(403, error.forbidden)
     app.register_error_handler(404, error.page_not_found)
     app.register_error_handler(405, error.method_not_allowed)

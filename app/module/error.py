@@ -18,6 +18,11 @@ def bad_request(error):
     return render(error)
 
 
+def unauthorized(error):
+    g.description = "유효한 인증 자격이 없습니다"
+    return render(error)
+
+
 def forbidden(error):
     g.description = "해당 페이지를 볼 수 있는 권한이 없습니다"
     return render(error)
