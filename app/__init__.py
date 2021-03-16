@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from io import StringIO
 from os import path, mkdir
 
 from flask import Flask, g
-from flask import Response, send_file
+from flask import send_file
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -32,9 +33,8 @@ def create_app():          # Flask 앱
 
     @app.route("/robots.txt")
     def robots():
-        return Response(
-            mimetype="text/plain",
-            response="\n".join([
+        return send_file(
+            StringIO("\n".join([
                 "User-agent: *",
                 "Allow: /$",
                 "Allow: /static",
@@ -42,21 +42,25 @@ def create_app():          # Flask 앱
                 "Disallow: /dl",
                 "Disallow: /md5",
                 "Disallow: /upload"
-            ])
-        ), 200
+            ])),
+            mimetype="text/plain"
+        )
 
     @app.before_request
     def set_global():
-        g.host = conf['app']['host']  # http 프로트콜을 포함한 도메인
+        # http 프로트콜을 포함한 도메인
+        g.host = conf['app']['host']
 
-        g.title = conf['app']['title']              # 웹 사이트 타이틀
-        g.description = conf['app']['description']  # 웹 사이트 설명창
+        # 웹 사이트 타이틀
+        g.title = conf['app']['title']
+
+        # 웹 사이트 설명창
+        g.description = conf['app']['description']
 
     @app.after_request
     def set_header(response):
         response.headers['X-Frame-Options'] = "deny"  # Clickjacking
-        response.headers['X-XSS-Protection'] = "1"    # Cross-site scripting
-        response.headers['X-Powered-By'] = "chick_0"  # YEAH!
+        response.headers['X-Powered-By'] = "chick_0"
         return response
 
     # DB 모델 등록
@@ -87,7 +91,7 @@ def create_app():          # Flask 앱
     app.register_error_handler(403, error.forbidden)
     app.register_error_handler(404, error.page_not_found)
     app.register_error_handler(405, error.method_not_allowed)
-    app.register_error_handler(413, error.request_entity_too_large)  # 업로드 용량 초과
+    app.register_error_handler(413, error.request_entity_too_large)
 
     app.register_error_handler(500, error.internal_server_error)
 
