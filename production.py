@@ -1,36 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from os import path, mkdir
-from datetime import datetime
-from logging import getLogger, FileHandler
+from logging import getLogger
+from logging import FileHandler
 
 from waitress import serve
 from paste.translogger import TransLogger
 
-import app
+from app import create_app
 from conf import conf
-from config import LOG_PATH
 
 
 if __name__ == "__main__":
-    if not path.isdir(path.join(LOG_PATH)):
-        mkdir(LOG_PATH)
+    # 로거 핸들러 가져오기, 파일 핸들러 등록하기
+    logger = getLogger("wsgi")
+    logger.addHandler(FileHandler("wsgi.log"))
 
-    logger = getLogger(
-        name="wsgi"
-    )
-
-    logger.addHandler(
-        hdlr=FileHandler(
-            filename=path.join(LOG_PATH, f"{datetime.today().strftime('%Y-%m-%d %Hh %Mm %Ss')}.log")
-        )
-    )
-
-    app = app.create_app()
+    # `conf/server.ini`에 설정된 포트로 웹 서버 시작
     serve(
         app=TransLogger(
-            application=app,
-            setup_console_handler=True
+            application=create_app()
         ),
-        port=conf['server']['port']
+        port=conf['server']['port'],
     )
