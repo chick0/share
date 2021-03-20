@@ -16,8 +16,8 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app():          # Flask 앱
-    app = Flask(__name__)  # 앱 만들기
+def create_app():
+    app = Flask(__name__)
     app.config.from_object(obj=__import__("config"))
 
     @app.route("/ok")
@@ -78,12 +78,9 @@ def create_app():          # Flask 앱
 
     from app import views
     for view_point in views.__all__:
-        try:
-            app.register_blueprint(   # 블루프린트 등록시도
-                blueprint=getattr(getattr(views, view_point), "bp")
-            )
-        except AttributeError:        # 블루프린트 객체가 없다면
-            print(f"[!] '{view_point}' 는 뷰 포인트가 아닙니다")
+        app.register_blueprint(   # 블루프린트 등록시도
+            blueprint=getattr(getattr(views, view_point), "bp")
+        )
 
     # 오류 핸들러
     app.register_error_handler(400, error.bad_request)
