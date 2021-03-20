@@ -78,7 +78,7 @@ def create_app():
 
     from app import views
     for view_point in views.__all__:
-        app.register_blueprint(   # 블루프린트 등록시도
+        app.register_blueprint(
             blueprint=getattr(getattr(views, view_point), "bp")
         )
 
