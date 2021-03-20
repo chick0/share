@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from io import StringIO
+from io import BytesIO
 from os import path, mkdir
 
 from flask import Flask, g
@@ -34,14 +34,14 @@ def create_app():          # Flask 앱
     @app.route("/robots.txt")
     def robots():
         return send_file(
-            StringIO("\n".join([
-                "User-agent: *",
-                "Allow: /$",
-                "Allow: /static",
-                "Disallow: /",
-                "Disallow: /dl",
-                "Disallow: /md5",
-                "Disallow: /upload"
+            BytesIO(b"\n".join([
+                b"User-agent: *",
+                b"Allow: /$",
+                b"Allow: /static",
+                b"Disallow: /",
+                b"Disallow: /dl",
+                b"Disallow: /md5",
+                b"Disallow: /upload"
             ])),
             mimetype="text/plain"
         )
